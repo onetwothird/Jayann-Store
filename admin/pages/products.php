@@ -173,10 +173,10 @@ $categories = $db->all('SELECT DISTINCT category FROM products ORDER BY category
 $highlight  = admin_qint('highlight');
 
 $sortOptions = [
-    'name'      => 'Name (Aâ€“Z)',
+    'name'      => 'Name (A–Z)',
     'newest'    => 'Newest first',
-    'price_desc'=> 'Price (high â†’ low)',
-    'price_asc' => 'Price (low â†’ high)',
+    'price_desc'=> 'Price (high – low)',
+    'price_asc' => 'Price (low – high)',
     'stock'     => 'Lowest stock',
 ];
 
@@ -225,13 +225,13 @@ require __DIR__ . '/../../app/views/admin/head.php';
             <div class="field">
                 <label class="field__label" for="np-category">Category</label>
                 <select class="select" id="np-category" name="category" required>
-                    <option value="">Choose a categoryâ€¦</option>
+                    <option value="">Choose a category…</option>
                     <?php foreach ($categories as $c): ?>
                         <option value="<?= e($c['category']) ?>"><?= e($c['category']) ?></option>
                     <?php endforeach; ?>
                 </select>
                 <input class="input" type="text" name="existing_category" style="margin-top:var(--sp-2)"
-                       placeholder="â€¦or type a new one" list="np-cats" maxlength="100">
+                       placeholder="…or type a new one" list="np-cats" maxlength="100">
                 <datalist id="np-cats">
                     <?php foreach ($categories as $c): ?>
                         <option value="<?= e($c['category']) ?>"></option>
@@ -345,7 +345,7 @@ require __DIR__ . '/../../app/views/admin/head.php';
                     <tr<?= $highlight === (int) $p['id'] ? ' style="background:var(--brand-50)"' : '' ?>>
                         <td>
                             <span class="cellproduct">
-                                <img src="../<?= e(product_image($p['image'])) ?>" alt="" loading="lazy">
+                                <img src="<?= e(product_image($p['image'])) ?>" alt="" loading="lazy">
                                 <span>
                                     <strong><?= e($p['name']) ?></strong>
                                     <small>
