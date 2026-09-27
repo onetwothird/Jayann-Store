@@ -111,7 +111,7 @@ $adminPass  = (string) $db->value('SELECT password FROM admin WHERE name = ?', [
 $adminPassPlain = 'password123';
 
 $testProduct  = 'ZZ Flow Test Product ' . $stamp;
-$testCategory = 'FlowTest';
+$testCategory = 'Essentials';
 $testCustomer = 'flow' . $stamp . '@example.test';
 $testCustPass = 'Flowtest' . $stamp;
 $testCustName = 'Flow Tester';
@@ -119,8 +119,35 @@ $newAdmin     = 'flowadm' . $stamp;
 
 $created = ['products' => [], 'archive' => [], 'orders' => [], 'users' => [], 'admin' => []];
 
+$purgeStaleTestData = static function () use ($db): int {
+    $pids = $db->all('SELECT id FROM products WHERE name LIKE ?', ['ZZ Flow Test%']);
+    foreach ($pids as $p) {
+        $db->run('DELETE FROM cart WHERE pid = ?', [(int) $p['id']]);
+        $db->run('DELETE FROM stock_movements WHERE product_id = ?', [(int) $p['id']]);
+        $db->run('DELETE FROM products WHERE id = ?', [(int) $p['id']]);
+    }
+    $db->run('DELETE FROM product_archive WHERE name LIKE ?', ['ZZ Flow Test%']);
+
+    $uids = $db->all('SELECT id FROM users WHERE email LIKE ?', ['flow%@example.test']);
+    foreach ($uids as $u) {
+        $db->run('DELETE FROM cart WHERE user_id = ?', [(int) $u['id']]);
+        $db->run('DELETE FROM orders WHERE user_id = ?', [(int) $u['id']]);
+        $db->run('DELETE FROM users WHERE id = ?', [(int) $u['id']]);
+    }
+
+    $db->run('DELETE FROM admin WHERE name LIKE ?', ['flowadm%']);
+    $db->run('DELETE FROM messages WHERE message LIKE ?', ['%Automated flow test message%']);
+
+    return count($pids) + count($uids);
+};
+
+$stalePurged = $keep ? 0 : $purgeStaleTestData();
+
 echo "\n";
 echo "  End-to-end flow test against " . $base . "\n";
+if ($stalePurged > 0) {
+    echo "  Cleared $stalePurged leftover row(s) from an interrupted earlier run.\n";
+}
 echo "  " . str_pad('-', 60) . "\n";
 
 heading('Admin authentication');
@@ -368,7 +395,7 @@ check(
 );
 checkNoPhpErrors($shopper, 'The sign-up page');
 
-$shopper->request('/logout.php');
+$shopper->request('/public/logout.php');
 $shopper->request('/public/login.php', ['email' => $testCustomer, 'password' => 'wrong-password']);
 check(
     'a wrong customer password is rejected',
@@ -418,28 +445,28 @@ if ($productId && $userId) {
     $cartId = (int) $db->value('SELECT id FROM cart WHERE user_id = ? AND pid = ?', [$userId, $productId]);
     check('the cart row is addressable by its own id', $cartId > 0);
 
-    $shopper->request('/cart.php', ['cart_action' => 'update', 'cart_id' => (string) $cartId, 'qty' => '3']);
+    $shopper->request('/public/cart.php', ['cart_action' => 'update', 'cart_id' => (string) $cartId, 'qty' => '3']);
     checkEquals(
         'the cart quantity can be changed',
         3,
         (int) $db->value('SELECT COALESCE(SUM(quantity), 0) FROM cart WHERE user_id = ? AND pid = ?', [$userId, $productId])
     );
 
-    $shopper->request('/cart.php', ['cart_action' => 'update', 'cart_id' => (string) $cartId, 'qty' => '9999']);
+    $shopper->request('/public/cart.php', ['cart_action' => 'update', 'cart_id' => (string) $cartId, 'qty' => '9999']);
     checkEquals(
         'the cart quantity is clamped to the stock on hand',
         $liveStock,
         (int) $db->value('SELECT COALESCE(SUM(quantity), 0) FROM cart WHERE user_id = ? AND pid = ?', [$userId, $productId])
     );
 
-    $shopper->request('/cart.php', ['cart_action' => 'update', 'cart_id' => (string) $cartId, 'qty' => '2']);
+    $shopper->request('/public/cart.php', ['cart_action' => 'update', 'cart_id' => (string) $cartId, 'qty' => '2']);
     checkEquals(
         'the cart quantity can be lowered again',
         2,
         (int) $db->value('SELECT COALESCE(SUM(quantity), 0) FROM cart WHERE user_id = ? AND pid = ?', [$userId, $productId])
     );
 
-    $shopper->request('/cart.php');
+    $shopper->request('/public/cart.php');
     check(
         'the product shows on the cart page',
         str_contains($shopper->body, $liveName),
@@ -453,28 +480,28 @@ if ($productId && $userId) {
     );
     checkNoPhpErrors($shopper, 'The cart page');
 
-    $shopper->request('/cart.php', ['cart_action' => 'remove', 'cart_id' => (string) $cartId]);
+    $shopper->request('/public/cart.php', ['cart_action' => 'remove', 'cart_id' => (string) $cartId]);
     checkEquals(
         'a product can be removed from the cart',
         0,
         (int) $db->value('SELECT COALESCE(SUM(quantity), 0) FROM cart WHERE user_id = ? AND pid = ?', [$userId, $productId])
     );
 
-    $shopper->request('/cart.php', ['cart_action' => 'add', 'pid' => (string) $productId, 'qty' => '2']);
+    $shopper->request('/public/cart.php', ['cart_action' => 'add', 'pid' => (string) $productId, 'qty' => '2']);
     checkEquals(
         'a removed product can be added back',
         2,
         (int) $db->value('SELECT COALESCE(SUM(quantity), 0) FROM cart WHERE user_id = ? AND pid = ?', [$userId, $productId])
     );
 
-    $shopper->request('/cart.php', ['cart_action' => 'add', 'pid' => (string) $productId, 'qty' => '9999']);
+    $shopper->request('/public/cart.php', ['cart_action' => 'add', 'pid' => (string) $productId, 'qty' => '9999']);
     check(
         'the cart refuses more than the available stock',
         (int) $db->value('SELECT COALESCE(SUM(quantity), 0) FROM cart WHERE user_id = ? AND pid = ?', [$userId, $productId]) <= $liveStock,
         'the cart accepted more units than exist'
     );
 
-    $shopper->request('/cart.php', ['cart_action' => 'update', 'cart_id' => (string) $cartId, 'qty' => '2']);
+    $shopper->request('/public/cart.php', ['cart_action' => 'update', 'cart_id' => (string) $cartId, 'qty' => '2']);
 
     $shopper->request('/public/checkout.php', [
         'payment_method' => 'cod',
@@ -523,13 +550,13 @@ if ($productId && $userId) {
         check('the customer sees the order in their history', str_contains($shopper->body, (string) $order['order_ref']));
         checkNoPhpErrors($shopper, 'The orders page');
 
-        $shopper->request('/receipt.php?order=' . $orderId);
+        $shopper->request('/public/receipt.php?order=' . $orderId);
         check('the customer can open the receipt', $shopper->status === 200 && !str_contains($shopper->url, '/public/login.php'));
         checkNoPhpErrors($shopper, 'The receipt');
 
         $other = new Client('other');
         $other->request('/public/login.php', ['email' => 'someone.else@example.test', 'password' => 'whatever']);
-        $other->request('/receipt.php?order=' . $orderId);
+        $other->request('/public/receipt.php?order=' . $orderId);
         check(
             "another customer cannot read someone else's receipt",
             str_contains($other->url, 'login.php') || str_contains($other->url, 'orders.php') || $other->status >= 400,
@@ -908,8 +935,8 @@ check(
     'still had access via ' . $admin->url
 );
 
-$shopper->request('/logout.php');
-$shopper->request('/cart.php');
+$shopper->request('/public/logout.php');
+$shopper->request('/public/cart.php');
 check(
     'a customer session cannot be reused after signing out',
     str_contains($shopper->url, '/public/login.php'),
