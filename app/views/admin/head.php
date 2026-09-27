@@ -60,7 +60,7 @@ $admin_nav = [
     ],
     [
         'key'   => 'messages',
-        'file'  => 'messages.php',
+        'file'  => 'contact.php',
         'icon'  => 'fa-envelope',
         'label' => 'Messages',
         'count' => (int) ($db->value('SELECT COUNT(*) FROM messages') ?? 0),
@@ -144,7 +144,7 @@ $flashes = take_flashes();
             <a class="sidebar__link" href="update_profile.php">
                 <i class="fa-solid fa-user-pen" aria-hidden="true"></i><span>My profile</span>
             </a>
-            <a class="sidebar__link" href="../index.php" target="_blank" rel="noopener">
+            <a class="sidebar__link" href="../../../Jayann_Store/public/home.php" target="_blank" rel="noopener">
                 <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i><span>View store</span>
             </a>
             <a class="sidebar__logout" href="logout.php">
