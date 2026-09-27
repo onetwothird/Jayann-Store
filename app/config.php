@@ -14,6 +14,27 @@ if (!defined('ASSET_PATH')) {
     define('ASSET_PATH', ROOT_PATH . '/assets');
 }
 
+if (!function_exists('detect_base_url')) {
+    function detect_base_url(): string
+    {
+        $configured = getenv('JAYANN_BASE_URL');
+        if ($configured !== false && $configured !== '') {
+            return '/' . trim($configured, '/') . '/';
+        }
+
+        $script = (string) ($_SERVER['SCRIPT_NAME'] ?? '');
+        $appDir = basename(ROOT_PATH);
+        $needle = '/' . $appDir . '/';
+        $at = strpos($script, $needle);
+
+        return $at === false ? '/' : substr($script, 0, $at + strlen($needle));
+    }
+}
+
+if (!defined('BASE_URL')) {
+    define('BASE_URL', detect_base_url());
+}
+
 function config(string $key, $default = null)
 {
     $env = getenv($key);
@@ -38,7 +59,7 @@ return [
         'email'     => 'contact@jayannstore.com',
         'phone'     => '+63 938 510 0460',
         'phone_raw' => '09385100460',
-        'address'   => 'Sapang I, Ternate, Cavite',
+        'address'   => 'Blk 57, Lot 14, Hyacinth Residence',
         'hours'     => 'Mon–Sat, 8:00 AM – 8:00 PM',
 
         'facebook'  => 'https://www.facebook.com/angelo.decatoria.5',
