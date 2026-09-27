@@ -1,0 +1,16 @@
+.status {
+display: inline-flex; align-items: center; gap: .375rem;
+padding: .25rem .625rem; border-radius: var(--r-full);
+font-size: var(--fs-xs); font-weight: 700;
+}
+
+.status::before { content: ''; width: 6px; height: 6px; border-radius: var(--r-full); background: currentColor; }
+
+.status--pending   { background: var(--warn-50);    color: #92400e; }
+
+.status--paid      { background: var(--success-50); color: var(--success-700); }
+
+.status--completed { background: var(--info-50);    color: var(--info-700); }
+
+.status--failed,
+.status--cancelled { background: var(--danger-50);  color: var(--danger-600); }
