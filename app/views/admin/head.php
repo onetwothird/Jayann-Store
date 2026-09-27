@@ -93,9 +93,9 @@ $flashes = take_flashes();
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <title><?= e($page_title) ?> &middot; <?= e($config['store']['legal']) ?></title>
-<link rel="icon" type="image/png" href="/Jayann_Store/assets/img/storenijayann.png">
+<link rel="icon" type="image/png" href="<?= BASE_URL ?>assets/img/storenijayann.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<link rel="stylesheet" href="/Jayann_Store/assets/css/admin_style.css?v=2.0">
+<?= render_css('admin') ?>
 </head>
 <body>
 
@@ -108,7 +108,7 @@ $flashes = take_flashes();
 
     <aside class="sidebar" data-sidebar aria-label="Admin navigation">
         <a class="sidebar__brand" href="dashboard.php">
-            <img src="/Jayann_Store/assets/img/storenijayann.png" alt="">
+            <img src="<?= BASE_URL ?>assets/img/storenijayann.png" alt="">
             <span>
                 <strong><?= e($config['store']['legal']) ?></strong>
                 <small>Admin panel</small>
@@ -157,22 +157,24 @@ $flashes = take_flashes();
 
     <div class="admin__main">
         <header class="topbar">
-            <button class="iconbtn topbar__burger" type="button" data-sidebar-open aria-expanded="false" aria-label="Open navigation">
-                <i class="fa-solid fa-bars" aria-hidden="true"></i>
-            </button>
-            <div>
-                <p class="topbar__title"><?= e($page_title) ?></p>
-                <?php if ($page_sub !== ''): ?>
-                    <p class="topbar__sub"><?= e($page_sub) ?></p>
-                <?php endif; ?>
-            </div>
-            <div class="topbar__right">
-                <a class="iconbtn" href="messages.php" title="Messages" aria-label="Messages">
-                    <i class="fa-regular fa-bell" aria-hidden="true"></i>
-                </a>
-                <a class="iconbtn" href="update_profile.php" title="My profile" aria-label="My profile">
-                    <i class="fa-solid fa-user" aria-hidden="true"></i>
-                </a>
+            <div class="topbar__inner">
+                <button class="iconbtn topbar__burger" type="button" data-sidebar-open aria-expanded="false" aria-label="Open navigation">
+                    <i class="fa-solid fa-bars" aria-hidden="true"></i>
+                </button>
+                <div>
+                    <p class="topbar__title"><?= e($page_title) ?></p>
+                    <?php if ($page_sub !== ''): ?>
+                        <p class="topbar__sub"><?= e($page_sub) ?></p>
+                    <?php endif; ?>
+                </div>
+                <div class="topbar__right">
+                    <a class="iconbtn" href="messages.php" title="Messages" aria-label="Messages">
+                        <i class="fa-regular fa-bell" aria-hidden="true"></i>
+                    </a>
+                    <a class="iconbtn" href="update_profile.php" title="My profile" aria-label="My profile">
+                        <i class="fa-solid fa-user" aria-hidden="true"></i>
+                    </a>
+                </div>
             </div>
         </header>
 
