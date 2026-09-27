@@ -6,7 +6,7 @@ boot_session();
 include '../app/cart_actions.php';
 include '../app/views/shop/catalog.php';
 
-$pageTitle = $filters['q'] !== '' ? 'Results for Ã¢â‚¬Å“' . $filters['q'] . 'Ã¢â‚¬Â' : 'Search';
+$pageTitle = $filters['q'] !== '' ? 'Results for “' . $filters['q'] . '”' : 'Search';
 $pageDesc  = 'Search Jayann\'s Store for drinks, snacks, essentials and personal care.';
 $pageClass = 'page-search';
 
