@@ -1,0 +1,55 @@
+.tablewrap { overflow-x: auto; }
+
+.table { width: 100%; border-collapse: collapse; font-size: var(--fs-md); }
+
+.table th, .table td { padding: var(--sp-3) var(--sp-4); text-align: left; vertical-align: middle; }
+
+.table thead th {
+background: var(--gray-50);
+border-bottom: 1px solid var(--border);
+font-size: var(--fs-xs); font-weight: 700; letter-spacing: .06em;
+text-transform: uppercase; color: var(--text-soft);
+white-space: nowrap;
+}
+
+.table tbody tr { border-bottom: 1px solid var(--border); transition: background-color var(--tr); }
+
+.table tbody tr:last-child { border-bottom: 0; }
+
+.table tbody tr:hover { background: var(--gray-25); }
+
+.table td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.table .rowactions { display: flex; gap: var(--sp-2); }
+
+.cellproduct { display: flex; align-items: center; gap: var(--sp-3); min-width: 15rem; }
+
+.cellproduct img {
+width: 2.75rem; height: 2.75rem; flex-shrink: 0;
+border-radius: var(--r-sm); border: 1px solid var(--border);
+background: var(--gray-50); object-fit: contain; padding: 2px;
+}
+
+.cellproduct strong { display: block; font-weight: 600; line-height: 1.35; }
+
+.cellproduct small  { display: block; font-size: var(--fs-xs); color: var(--text-muted); }
+
+.tablewrap {
+overflow-x: auto;
+overscroll-behavior-x: contain;
+-webkit-overflow-scrolling: touch;
+max-width: 100%;
+}
+
+.cellproduct > span { min-width: 0; }
+
+.cellproduct strong { overflow-wrap: anywhere; }
+
+.table td .rowactions { flex-wrap: wrap; }
+
+.table td,
+.table th,
+.movelist__body strong,
+.movelist__body small,
+.info-row__value,
+.sheet__cell dd { overflow-wrap: anywhere; }
