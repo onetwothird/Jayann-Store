@@ -12,7 +12,7 @@ $methods = available_payment_methods();
 $errors  = [];
 
 if ($totals['is_empty']) {
-    flash('info', 'Your cart is empty Ã¢â‚¬â€ add something before checking out.');
+    flash('info', 'Your cart is empty — add something before checking out.');
     redirect('cart.php');
 }
 
