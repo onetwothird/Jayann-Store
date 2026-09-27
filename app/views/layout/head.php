@@ -22,13 +22,13 @@ $searchQ = trim((string) ($_GET['q'] ?? ''));
 <title><?= e($pageTitle) ?> &middot; <?= e($store['name']) ?></title>
 <meta name="description" content="<?= e($pageDesc) ?>">
 
-<link rel="icon" type="image/png" href="/Jayann_Store/assets/img/storenijayann.png">
+<link rel="icon" type="image/png" href="<?= BASE_URL ?>assets/img/storenijayann.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-<link rel="stylesheet" href="/Jayann_Store/assets/css/style.css?v=2.0">
+<?= render_css('storefront') ?>
 </head>
 <body class="<?= e($pageClass) ?>">
 
@@ -63,7 +63,7 @@ $searchQ = trim((string) ($_GET['q'] ?? ''));
         </p>
         <ul class="topbar__links">
             <li><a href="contact.php">Help</a></li>
-            <li><a href="/Jayann_Store/public/orders.php">Track order</a></li>
+            <li><a href="<?= BASE_URL ?>public/orders.php">Track order</a></li>
             <li><a href="<?= e($store['facebook']) ?>" rel="noopener noreferrer" target="_blank">
                 <i class="fa-brands fa-facebook-f" aria-hidden="true"></i> Facebook</a></li>
         </ul>
@@ -74,8 +74,8 @@ $searchQ = trim((string) ($_GET['q'] ?? ''));
 <header class="header" id="siteHeader">
     <div class="container header__inner">
 
-        <a href="/Jayann_Store/public/home.php" class="brand" aria-label="<?= e($store['name']) ?> home">
-            <img src="/Jayann_Store/assets/img/storenijayann.png" alt="" class="brand__logo" width="44" height="44">
+        <a href="<?= BASE_URL ?>public/home.php" class="brand" aria-label="<?= e($store['name']) ?> home">
+            <img src="<?= BASE_URL ?>assets/img/storenijayann.png" alt="" class="brand__logo" width="44" height="44">
             <span class="brand__text">
                 <strong><?= e($store['name']) ?></strong>
                 <small><?= e($store['tagline']) ?></small>
@@ -90,7 +90,7 @@ $searchQ = trim((string) ($_GET['q'] ?? ''));
         </form>
 
         <div class="header__actions">
-            <a href="/Jayann_Store/public/cart.php" class="iconbtn" aria-label="Cart, <?= (int) $cartNum ?> items">
+            <a href="<?= BASE_URL ?>public/cart.php" class="iconbtn" aria-label="Cart, <?= (int) $cartNum ?> items">
                 <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
                 <span class="badge-count" data-cart-count><?= (int) $cartNum ?></span>
             </a>
@@ -112,10 +112,10 @@ $searchQ = trim((string) ($_GET['q'] ?? ''));
                                 <small><?= e($user['email']) ?></small>
                             </div>
                         </div>
-                        <a role="menuitem" href="/Jayann_Store/public/profile.php"><i class="fa-regular fa-user" aria-hidden="true"></i> My profile</a>
-                        <a role="menuitem" href="/Jayann_Store/public/orders.php"><i class="fa-solid fa-box" aria-hidden="true"></i> My orders</a>
-                        <a role="menuitem" href="/Jayann_Store/public/cart.php"><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i> My cart</a>
-                        <a role="menuitem" class="is-danger" href="/Jayann_Store/public/logout.php"
+                        <a role="menuitem" href="<?= BASE_URL ?>public/profile.php"><i class="fa-regular fa-user" aria-hidden="true"></i> My profile</a>
+                        <a role="menuitem" href="<?= BASE_URL ?>public/orders.php"><i class="fa-solid fa-box" aria-hidden="true"></i> My orders</a>
+                        <a role="menuitem" href="<?= BASE_URL ?>public/cart.php"><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i> My cart</a>
+                        <a role="menuitem" class="is-danger" href="<?= BASE_URL ?>public/logout.php"
                            onclick="return confirm('Log out of Jayann\'s Store?');">
                             <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Log out</a>
                     <?php else: ?>
@@ -123,8 +123,8 @@ $searchQ = trim((string) ($_GET['q'] ?? ''));
                             <span class="account__avatar"><i class="fa-solid fa-user" aria-hidden="true"></i></span>
                             <div><strong>Welcome</strong><small>Sign in to start shopping</small></div>
                         </div>
-                        <a role="menuitem" class="btn btn--block" href="/Jayann_Store/public/login.php">Log in</a>
-                        <a role="menuitem" class="btn btn--ghost btn--block" href="/Jayann_Store/public/register.php">Create account</a>
+                        <a role="menuitem" class="btn btn--block" href="<?= BASE_URL ?>public/login.php">Log in</a>
+                        <a role="menuitem" class="btn btn--ghost btn--block" href="<?= BASE_URL ?>public/register.php">Create account</a>
                     <?php endif; ?>
                 </div>
             </div>
@@ -138,17 +138,17 @@ $searchQ = trim((string) ($_GET['q'] ?? ''));
 
     <nav class="catnav" aria-label="Product categories">
         <div class="container catnav__inner">
-            <a href="/Jayann_Store/public/products.php" class="catnav__link<?= $currentPage === 'products.php' ? ' is-active' : '' ?>">
-                <i class="fa-solid fa-grip" aria-hidden="true"></i> All products
+            <a href="<?= BASE_URL ?>public/products.php" class="catnav__link<?= $currentPage === 'products.php' ? ' is-active' : '' ?>">
+                <i class="fa-solid fa-grip" aria-hidden="true"></i> All Products
             </a>
             <?php foreach (product_categories() as $catRow):
                 $cat = $catRow['category'];
                 $isActive = ($currentPage === 'category.php' && ($_GET['category'] ?? '') === $cat);
             ?>
-            <a href="/Jayann_Store/public/category.php?category=<?= urlencode($cat) ?>"
+            <a href="<?= BASE_URL ?>public/category.php?category=<?= urlencode($cat) ?>"
                class="catnav__link<?= $isActive ? ' is-active' : '' ?>"><?= e($cat) ?></a>
             <?php endforeach; ?>
-            <a href="/Jayann_Store/public/discounted_products.php" class="catnav__link catnav__link--sale<?= $currentPage === 'discounted_products.php' ? ' is-active' : '' ?>">
+            <a href="<?= BASE_URL ?>public/discounted_products.php" class="catnav__link catnav__link--sale<?= $currentPage === 'discounted_products.php' ? ' is-active' : '' ?>">
                 <i class="fa-solid fa-tags" aria-hidden="true"></i> On sale
             </a>
         </div>
@@ -173,26 +173,26 @@ $searchQ = trim((string) ($_GET['q'] ?? ''));
         </div>
 
         <nav class="drawer__nav">
-            <a href="/Jayann_Store/public/home.php"<?= $currentPage === 'home.php' ? ' class="is-active"' : '' ?>><i class="fa-solid fa-house" aria-hidden="true"></i> Home</a>
-            <a href="/Jayann_Store/public/products.php"<?= $currentPage === 'products.php' ? ' class="is-active"' : '' ?>><i class="fa-solid fa-box-open" aria-hidden="true"></i> All products</a>
-            <a href="/Jayann_Store/public/discounted_products.php"<?= $currentPage === 'discounted_products.php' ? ' class="is-active"' : '' ?>><i class="fa-solid fa-tags" aria-hidden="true"></i> On sale</a>
+            <a href="<?= BASE_URL ?>public/home.php"<?= $currentPage === 'home.php' ? ' class="is-active"' : '' ?>><i class="fa-solid fa-house" aria-hidden="true"></i> Home</a>
+            <a href="<?= BASE_URL ?>public/products.php"<?= $currentPage === 'products.php' ? ' class="is-active"' : '' ?>><i class="fa-solid fa-box-open" aria-hidden="true"></i> All Products</a>
+            <a href="<?= BASE_URL ?>public/discounted_products.php"<?= $currentPage === 'discounted_products.php' ? ' class="is-active"' : '' ?>><i class="fa-solid fa-tags" aria-hidden="true"></i> On sale</a>
             <a href="about.php"<?= $currentPage === 'about.php' ? ' class="is-active"' : '' ?>><i class="fa-solid fa-circle-info" aria-hidden="true"></i> About us</a>
             <a href="contact.php"<?= $currentPage === 'contact.php' ? ' class="is-active"' : '' ?>><i class="fa-solid fa-headset" aria-hidden="true"></i> Contact</a>
-            <a href="/Jayann_Store/public/orders.php"<?= $currentPage === 'orders.php' ? ' class="is-active"' : '' ?>><i class="fa-solid fa-receipt" aria-hidden="true"></i> My orders</a>
+            <a href="<?= BASE_URL ?>public/orders.php"<?= $currentPage === 'orders.php' ? ' class="is-active"' : '' ?>><i class="fa-solid fa-receipt" aria-hidden="true"></i> My orders</a>
             <?php if ($user): ?>
-                <a href="/Jayann_Store/public/profile.php"<?= $currentPage === 'profile.php' ? ' class="is-active"' : '' ?>><i class="fa-regular fa-user" aria-hidden="true"></i> My profile</a>
-                <a href="/Jayann_Store/public/cart.php"<?= $currentPage === 'cart.php' ? ' class="is-active"' : '' ?>><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i> My cart</a>
+                <a href="<?= BASE_URL ?>public/profile.php"<?= $currentPage === 'profile.php' ? ' class="is-active"' : '' ?>><i class="fa-regular fa-user" aria-hidden="true"></i> My profile</a>
+                <a href="<?= BASE_URL ?>public/cart.php"<?= $currentPage === 'cart.php' ? ' class="is-active"' : '' ?>><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i> My cart</a>
             <?php endif; ?>
         </nav>
 
         <?php if ($user): ?>
-            <a class="btn btn--ghost btn--block" href="/Jayann_Store/public/logout.php"
+            <a class="btn btn--ghost btn--block" href="<?= BASE_URL ?>public/logout.php"
                onclick="return confirm('Log out of Jayann\'s Store?');">
                 <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Log out</a>
         <?php else: ?>
             <div class="drawer__cta">
-                <a class="btn btn--block" href="/Jayann_Store/public/login.php">Log in</a>
-                <a class="btn btn--ghost btn--block" href="/Jayann_Store/public/register.php">Create account</a>
+                <a class="btn btn--block" href="<?= BASE_URL ?>public/login.php">Log in</a>
+                <a class="btn btn--ghost btn--block" href="<?= BASE_URL ?>public/register.php">Create account</a>
             </div>
         <?php endif; ?>
     </div>
