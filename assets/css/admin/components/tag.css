@@ -1,0 +1,16 @@
+.tag {
+display: inline-flex; align-items: center; gap: var(--sp-1);
+padding: .1875rem .5rem; border-radius: var(--r-sm);
+background: var(--gray-100); color: var(--gray-600);
+font-size: var(--fs-xs); font-weight: 600;
+}
+
+.tag--sale   { background: var(--brand-50);  color: var(--brand-600); }
+
+.tag--success{ background: var(--success-50);color: var(--success-700); }
+
+.tag--warn   { background: var(--warn-50);   color: #92400e; }
+
+.tag--danger { background: var(--danger-50); color: var(--danger-600); }
+
+.tag--info   { background: var(--info-50);   color: var(--info-700); }
