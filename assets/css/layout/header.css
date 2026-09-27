@@ -77,6 +77,31 @@ transition: background-color var(--transition);
 
 .header__actions { display: flex; align-items: center; gap: var(--sp-1); justify-self: end; }
 
+.header__nav { display: flex; align-items: center; gap: var(--sp-2); }
+
+.header__nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-1);
+    padding: .375rem .75rem;
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    color: var(--gray-700);
+    border-radius: var(--r-md);
+    transition: color var(--transition), background-color var(--transition);
+    white-space: nowrap;
+}
+
+.header__nav-link:hover {
+    color: var(--brand-600);
+    background: var(--brand-50);
+}
+
+.header__nav-link.is-active {
+    color: var(--brand-600);
+    background: var(--brand-50);
+}
+
 .iconbtn {
 position: relative;
 width: 2.5rem; height: 2.5rem; border-radius: var(--r-md);
