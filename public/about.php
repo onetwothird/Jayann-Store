@@ -45,7 +45,7 @@ require '../app/views/layout/head.php';
                 </div>
             </div>
             <div class="about-hero__media">
-                <img src="/Jayann_Store/assets/img/grocery-cart.png" alt="A packed grocery cart ready for delivery">
+                <img src="<?= BASE_URL ?>assets/img/grocery-cart.png" alt="A packed grocery cart ready for delivery">
             </div>
         </div>
     </div>
@@ -80,7 +80,7 @@ require '../app/views/layout/head.php';
     <div class="container">
         <div class="split">
             <div class="split__media">
-                <img src="/Jayann_Store/assets/img/order.png" alt="An order packed and ready to go">
+                <img src="<?= BASE_URL ?>assets/img/order.png" alt="An order packed and ready to go">
             </div>
             <div class="split__body">
                 <span class="eyebrow"><i class="fa-solid fa-heart" aria-hidden="true"></i> What we do</span>
