@@ -1,0 +1,75 @@
+.filters {
+display: flex; align-items: center; gap: var(--sp-2);
+flex-wrap: wrap; margin-bottom: var(--sp-6);
+padding-bottom: var(--sp-4); border-bottom: 1px solid var(--border);
+}
+
+@media (max-width: 640px) {
+.filters {
+flex-wrap: nowrap;
+overflow-x: auto;
+scroll-snap-type: x mandatory;
+-webkit-overflow-scrolling: touch;
+padding-bottom: var(--sp-3);
+margin-bottom: var(--sp-4);
+}
+.filters::-webkit-scrollbar { height: 6px; }
+.filters::-webkit-scrollbar-track { background: var(--gray-100); border-radius: 3px; }
+.filters::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 3px; }
+.filters > * { flex-shrink: 0; scroll-snap-align: start; }
+}
+
+.filters__count { margin-left: auto; font-size: var(--fs-sm); color: var(--text-muted); }
+
+.filters__count strong { color: var(--text); }
+
+.sortbar { display: flex; align-items: center; gap: var(--sp-2); }
+
+.sortbar .select { width: auto; padding-block: .4375rem; font-size: var(--fs-sm); }
+
+.layout-split {
+display: grid;
+grid-template-columns: 16.5rem 1fr;
+gap: var(--sp-6);
+align-items: start;
+}
+
+.filterside { position: sticky; top: calc(var(--header-h) + var(--sp-4)); }
+
+.filterside__panel .field:last-of-type { margin-bottom: var(--sp-3); }
+
+.pricerange {
+display: grid;
+grid-template-columns: 1fr auto 1fr;
+align-items: center;
+gap: var(--sp-2);
+}
+
+.pricerange span { color: var(--text-soft); }
+
+.pricerange .input { padding-inline: var(--sp-3); min-width: 0; }
+
+.check {
+display: flex; align-items: center; gap: var(--sp-3);
+padding: var(--sp-2) 0; cursor: pointer;
+font-size: var(--fs-md); color: var(--gray-700);
+user-select: none;
+}
+
+.check input { position: absolute; opacity: 0; width: 0; height: 0; }
+
+.check__mark {
+width: 1.25rem; height: 1.25rem; flex-shrink: 0;
+border: 1.5px solid var(--border-strong); border-radius: var(--r-sm);
+display: grid; place-items: center;
+color: transparent; font-size: .625rem;
+transition: all var(--transition);
+}
+
+.check:hover .check__mark { border-color: var(--brand-400); }
+
+.check input:checked + .check__mark {
+background: var(--brand-500); border-color: var(--brand-500); color: #fff;
+}
+
+.check input:focus-visible + .check__mark { outline: 2px solid var(--brand-500); outline-offset: 2px; }
