@@ -27,7 +27,7 @@ if (!$product) {
        . '<span class="empty__icon"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i></span>'
        . '<h1 class="empty__title">Product not found</h1>'
        . '<p class="empty__text">It may have been removed from the catalogue.</p>'
-       . '<a class="btn" href="products.php">Browse all products</a>'
+       . '<a class="btn" href="products.php">Browse all Products</a>'
        . '</div></section>';
     require '../app/views/layout/footer.php';
     exit;
@@ -153,6 +153,7 @@ $renderBody = static function () use (
                 <li><i class="fa-solid fa-truck-fast" aria-hidden="true"></i> Delivery in 1&ndash;2 days</li>
                 <li><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> 7-day replacement</li>
                 <li><i class="fa-solid fa-cash-register" aria-hidden="true"></i> Pay on delivery</li>
+                <li><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Secure checkout</li>
             </ul>
         </div>
     </div>
