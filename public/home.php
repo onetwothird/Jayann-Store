@@ -24,7 +24,7 @@ $catImages = [
 ];
 
 $promos = [
-    [BASE_URL . 'assets/img/promo2.png', 'Fresh restocks every week', 'Beverages, snacks and household staples delivered to your door in Ternate, Cavite.', 'Shop beverages'],
+    [BASE_URL . 'assets/img/promo2.png', 'Fresh restocks every week', 'Beverages, snacks and household staples delivered to your door in Naic, Cavite.', 'Shop beverages'],
     [BASE_URL . 'assets/img/promo4.png', 'Groceries without the trip', 'Skip the queue. Browse our full catalogue, fill your cart, and we handle the rest.', 'Browse all products'],
     [BASE_URL . 'assets/img/promo3.png', 'Deals you can actually use', 'Real discounts on everyday favourites — updated weekly, while stocks last.', 'See today’s deals'],
 ];
@@ -33,7 +33,7 @@ $productCount = (int) $db->value('SELECT COUNT(*) FROM products');
 $categoryCount = count($cats);
 
 $pageTitle = 'Everyday essentials, delivered';
-$pageDesc  = 'Shop beverages, snacks, essentials and personal care at Jayann\'s Store. Fast local delivery in Ternate, Cavite.';
+$pageDesc  = 'Shop beverages, snacks, essentials and personal care at Jayann\'s Store. Fast local delivery in Naic, Cavite.';
 $pageClass = 'page-home';
 
 require '../app/views/layout/head.php';
@@ -122,7 +122,7 @@ require '../app/views/layout/head.php';
     <div class="container">
         <div class="promo">
             <h2>Free delivery on orders over <?= money($config['order']['free_shipping_over']) ?></h2>
-            <p>Stock up on the whole shop and we&rsquo;ll cover the delivery fee. Order before 6&nbsp;PM for next-day drop-off across Ternate.</p>
+            <p>Stock up on the whole shop and we&rsquo;ll cover the delivery fee. Order before 6&nbsp;PM for next-day drop-off across Naic.</p>
             <a href="products.php" class="btn btn--lg btn--light">Start shopping</a>
         </div>
     </div>
