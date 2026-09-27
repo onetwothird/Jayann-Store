@@ -90,7 +90,7 @@ require __DIR__ . '/../../app/views/admin/head.php';
 <div class="page-head">
     <div>
         <h1>Orders</h1>
-        <p><?= e(plural($total, 'order')) ?> <?= $statusFilter !== '' ? 'with status â€œ' . e($statusFilter) . 'â€' : 'in total' ?>.</p>
+        <p><?= e(plural($total, 'order')) ?> <?= $statusFilter !== '' ? 'with status “' . e($statusFilter) . '”' : 'in total' ?>.</p>
     </div>
 </div>
 
@@ -146,7 +146,7 @@ require __DIR__ . '/../../app/views/admin/head.php';
                     <?php
                     $meta  = order_status_meta((string) $o['payment_status']);
                     $lines = order_lines($o);
-                    $items = $lines ? e(format_order_items((string) $o['total_products'])) : 'â€”';
+                    $items = $lines ? e(format_order_items((string) $o['total_products'])) : '—';
                     ?>
                     <tr>
                         <td>
