@@ -60,7 +60,7 @@ require '../app/views/layout/head.php';
     <div class="auth__card panel">
         <div class="panel__body">
             <div class="auth__head">
-                <img class="auth__logo" src="/Jayann_Store/assets/img/storenijayann.png" alt="" width="56" height="56">
+                <img class="auth__logo" src="<?= BASE_URL ?>assets/img/storenijayann.png" alt="" width="56" height="56">
                 <h1>Create your account</h1>
                 <p>It takes a minute and makes checkout a lot faster.</p>
             </div>
