@@ -43,16 +43,16 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <title>Admin sign in &middot; <?= e($config['store']['legal']) ?></title>
-<link rel="icon" type="image/png" href="../assets/img/storenijayann.png">
+<link rel="icon" type="image/png" href="<?= BASE_URL ?>assets/img/storenijayann.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<link rel="stylesheet" href="../assets/css/admin_style.css?v=2.0">
+<?= render_css('admin') ?>
 </head>
 <body>
 
 <div class="auth">
     <div class="auth__card">
         <div class="auth__head">
-            <img src="../assets/img/storenijayann.png" alt="" width="56" height="56">
+            <img src="<?= BASE_URL ?>assets/img/storenijayann.png" alt="" width="56" height="56">
             <h1>Admin sign in</h1>
             <p><?= e($config['store']['legal']) ?> &middot; management console</p>
         </div>
@@ -80,7 +80,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                 <label class="field__label" for="pass">Password</label>
                 <div class="passfield">
                     <input class="input" type="password" id="pass" name="pass"
-                           autocomplete="current-password" required placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢">
+                           autocomplete="current-password" required placeholder="••••••">
                     <button class="passfield__toggle" type="button" data-toggle-password="pass" aria-label="Show password">
                         <i class="fa-regular fa-eye" aria-hidden="true"></i>
                     </button>
