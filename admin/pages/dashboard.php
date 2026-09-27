@@ -84,7 +84,7 @@ require __DIR__ . '/../../app/views/admin/head.php';
         <p>Here is how the store is doing right now.</p>
     </div>
     <div class="page-head__actions">
-        <a class="btn btn--ghost" href="../index.php" target="_blank" rel="noopener">
+        <a class="btn btn--ghost" href="../../Jayann_Store/public/home.php" target="_blank" rel="noopener">
             <i class="fa-solid fa-store" aria-hidden="true"></i> View store
         </a>
         <a class="btn" href="products.php">
