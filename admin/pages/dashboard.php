@@ -242,7 +242,7 @@ require __DIR__ . '/../../app/views/admin/head.php';
                             <tr>
                                 <td>
                                     <span class="cellproduct">
-                                        <img src="../<?= e(product_image($p['image'])) ?>" alt="">
+                                        <img src="<?= e(product_image($p['image'])) ?>" alt="">
                                         <span>
                                             <strong><?= e($p['name']) ?></strong>
                                             <small>
