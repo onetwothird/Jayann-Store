@@ -1,0 +1,68 @@
+# =============================================================================
+# Jayann's Store — Apache configuration
+# =============================================================================
+
+# ---------------------------------------------------------------- directory
+# Never show a file listing.
+Options -Indexes
+
+DirectoryIndex index.php index.html
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Force HTTPS (comment out while testing on plain http://localhost).
+    # RewriteCond %{HTTPS} !=on
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+</IfModule>
+
+# ------------------------------------------------------------ default charset
+AddDefaultCharset UTF-8
+
+# ------------------------------------------------------------------ security
+# Block direct access to application code, the schema and the dev tools.
+# Requests still work because every page `include`s these files.
+<FilesMatch "\.(sql|md|log|ini|json|lock)$">
+    Require all denied
+</FilesMatch>
+
+RedirectMatch 404 ^/Jayann_Store/(app|database|tools)(/|$)
+
+# Never execute PHP that arrives as an upload. (The matching rules live in
+# uploads/.htaccess - <Directory> blocks are not permitted inside .htaccess.)
+RedirectMatch 404 ^/Jayann_Store/uploads/.*\.(php|php3|php4|php5|php7|php8|phtml|phar|cgi|pl)$
+
+# ------------------------------------------------------------------- caching
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css                "access plus 7 days"
+    ExpiresByType application/javascript "access plus 7 days"
+    ExpiresByType image/svg+xml           "access plus 30 days"
+    ExpiresByType image/png               "access plus 30 days"
+    ExpiresByType image/jpeg              "access plus 30 days"
+    ExpiresByType image/webp              "access plus 30 days"
+    # PHP pages must always be revalidated, otherwise edits appear not to save.
+    ExpiresByType text/html               "access plus 0 seconds"
+</IfModule>
+
+<IfModule mod_headers.c>
+    <FilesMatch "\.(css|js|png|jpe?g|svg|webp|woff2?)$">
+        Header set Cache-Control "public, max-age=604800"
+    </FilesMatch>
+    <FilesMatch "\.php$">
+        Header set Cache-Control "no-cache, must-revalidate"
+    </FilesMatch>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# ------------------------------------------------------------------- uploads
+# Match PHP's own limit so a large image fails with our message, not a blank 500.
+<IfModule mod_php.c>
+    php_value upload_max_filesize 4M
+    php_value post_max_size 8M
+    php_value max_execution_time 60
+    php_flag display_errors Off
+    php_flag log_errors On
+</IfModule>

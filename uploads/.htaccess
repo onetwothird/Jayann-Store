@@ -1,0 +1,21 @@
+# =============================================================================
+# uploads/ — product photos only.
+# Nothing in here is ever executed: a .php file dropped into this folder is
+# served as plain text, never run.
+# =============================================================================
+
+Options -Indexes -ExecCGI
+
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+
+# Deny the dangerous extensions outright (belt and braces alongside engine off).
+<FilesMatch "\.(php|php3|php4|php5|php7|php8|phtml|phar|cgi|pl|asp|aspx|jsp|sh|exe)$">
+    Require all denied
+</FilesMatch>
+
+# Only images are expected here.
+<FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|avif)$">
+    Require all granted
+</FilesMatch>

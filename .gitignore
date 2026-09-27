@@ -1,0 +1,14 @@
+# Ignore nothing that ships with the project. This is the deployable app.
+# Local overrides that must never be committed:
+.env
+.env.local
+*.log
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+*~

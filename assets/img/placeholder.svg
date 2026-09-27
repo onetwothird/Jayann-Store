@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400" role="img" aria-label="Product image unavailable">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#eef1f5"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)"/>
+  <g fill="none" stroke="#cbd5e1" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M132 118h44l30 128a20 20 0 0 0 19.6 16h95"/>
+    <path d="M150 168h128"/>
+  </g>
+  <circle cx="168" cy="290" r="16" fill="#cbd5e1"/>
+  <circle cx="262" cy="290" r="16" fill="#cbd5e1"/>
+  <text x="200" y="350" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+        font-size="22" font-weight="600" fill="#94a3b8" text-anchor="middle">No image</text>
+</svg>
