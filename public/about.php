@@ -10,7 +10,7 @@ $orderCount    = (int) $db->value('SELECT COUNT(*) FROM orders');
 $years          = max(1, (int) date('Y') - 2023);
 
 $pageTitle = 'About us';
-$pageDesc  = 'Jayann\'s Store is a neighbourhood sari-sari and grocery in Ternate, Cavite.';
+$pageDesc  = 'Jayann\'s Store is a neighbourhood sari-sari and grocery in Naic, Cavite.';
 $pageClass = 'page-about';
 
 require '../app/views/layout/head.php';
@@ -69,7 +69,7 @@ require '../app/views/layout/head.php';
             </div>
             <div class="panel stats__item">
                 <div class="stats__num"><?= $years ?>d</div>
-                <div class="stats__label">Serving Ternate</div>
+                <div class="stats__label">Serving Naic</div>
             </div>
         </div>
     </div>
@@ -161,7 +161,7 @@ require '../app/views/layout/head.php';
         <div class="acc panel">
             <div class="acc__item">
                 <button type="button" class="acc__btn" data-acc-btn aria-expanded="false" aria-controls="faq1">
-                    Do you deliver outside Ternate?
+                    Do you deliver outside Naic?
                     <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
                 </button>
                 <div class="acc__panel" id="faq1">
