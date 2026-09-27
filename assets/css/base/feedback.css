@@ -1,0 +1,137 @@
+.panel__body > .btn--block + .btn--block { margin-top: var(--sp-3); }
+
+.toast-stack {
+position: fixed; top: var(--sp-4); right: var(--sp-4);
+z-index: 1200; display: flex; flex-direction: column; gap: var(--sp-2);
+max-width: min(24rem, calc(100vw - 2rem));
+pointer-events: none;
+}
+
+.toast {
+pointer-events: auto;
+display: flex; align-items: flex-start; gap: var(--sp-3);
+padding: .8125rem .875rem;
+background: var(--surface);
+
+border: 1px solid var(--border);
+border-radius: var(--r-md);
+box-shadow: var(--sh-lg);
+font-size: var(--fs-md);
+animation: toastIn .3s cubic-bezier(.2, .8, .3, 1);
+}
+
+.toast i { margin-top: .1875rem; font-size: 1.05rem; }
+
+.toast span { flex: 1; }
+
+.toast__close {
+font-size: 1.25rem; line-height: 1; color: var(--text-soft);
+padding: 0 var(--sp-1); transition: color var(--transition);
+}
+
+.toast__close:hover { color: var(--text); }
+
+.toast--success { background: var(--success-50); border-color: #a7f3d0; }
+
+.toast--success i { color: var(--success-500); }
+
+.toast--error { background: var(--danger-50); border-color: #fecaca; }
+
+.toast--error i { color: var(--danger-500); }
+
+.toast--warning { background: var(--warn-50); border-color: #fde68a; }
+
+.toast--warning i { color: var(--warn-500); }
+
+.toast--info { background: var(--info-50); border-color: var(--info-200); }
+
+.toast--info i { color: var(--info-500); }
+
+.toast.is-hiding { animation: toastOut .25s ease forwards; }
+
+@keyframes toastIn  { from { opacity: 0; transform: translateX(1.5rem); } }
+
+@keyframes toastOut { to   { opacity: 0; transform: translateX(1.5rem); } }
+
+.empty {
+grid-column: 1 / -1;
+display: flex; flex-direction: column; align-items: center; gap: var(--sp-3);
+padding: var(--sp-16) var(--sp-6);
+text-align: center;
+background: var(--surface);
+border: 1px dashed var(--border-strong);
+border-radius: var(--r-xl);
+color: var(--text-muted);
+}
+
+.empty__icon {
+width: 4.5rem; height: 4.5rem; border-radius: var(--r-full);
+display: grid; place-items: center;
+background: var(--brand-50); color: var(--brand-400);
+font-size: 1.75rem;
+}
+
+.empty__title { font-size: var(--fs-xl); font-weight: 700; color: var(--text); }
+
+.empty__text  { max-width: 42ch; font-size: var(--fs-md); }
+
+.panel {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--r-xl);
+box-shadow: var(--sh-sm);
+}
+
+.panel__head {
+padding: var(--sp-5) var(--sp-6);
+border-bottom: 1px solid var(--border);
+display: flex; align-items: center; justify-content: space-between;
+gap: var(--sp-4); flex-wrap: wrap;
+}
+
+.panel__title { font-size: var(--fs-lg); font-weight: 700; }
+
+.panel__body { padding: var(--sp-6); }
+
+.panel--product { padding: 0; overflow: hidden; }
+
+.acc { border-top: 1px solid var(--border); }
+
+.acc__item { border-bottom: 1px solid var(--border); }
+
+.acc__btn {
+width: 100%; display: flex; align-items: center; justify-content: space-between;
+gap: var(--sp-4); padding: var(--sp-4) 0;
+font-size: var(--fs-md); font-weight: 600; text-align: left;
+}
+
+.acc__btn i { color: var(--text-soft); transition: transform var(--transition); }
+
+.acc__btn[aria-expanded='true'] i { transform: rotate(180deg); }
+
+.acc__panel { display: none; padding-bottom: var(--sp-4); color: var(--text-muted); }
+
+.acc__panel.is-open { display: block; }
+
+.dl { display: grid; gap: var(--sp-3); }
+
+.dl__row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-4); }
+
+.dl__row dt { color: var(--text-muted); font-size: var(--fs-sm); }
+
+.dl__row dd { font-weight: 600; text-align: right; }
+
+.dl__row--total { border-top: 1px solid var(--border); padding-top: var(--sp-3); margin-top: var(--sp-1); }
+
+.dl__row--total dt { color: var(--text); font-weight: 600; font-size: var(--fs-md); }
+
+.dl__row--total dd { font-size: var(--fs-xl); font-weight: 800; color: var(--brand-600); }
+
+.skeleton {
+background: linear-gradient(90deg, var(--gray-100) 25%, var(--gray-50) 50%, var(--gray-100) 75%);
+background-size: 200% 100%;
+animation: shimmer 1.4s infinite linear;
+border-radius: var(--r-sm);
+}
+
+@keyframes shimmer { to { background-position: -200% 0; } }
