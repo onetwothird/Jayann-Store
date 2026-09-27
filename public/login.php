@@ -48,7 +48,7 @@ require '../app/views/layout/head.php';
     <div class="auth__card panel">
         <div class="panel__body">
             <div class="auth__head">
-                <img class="auth__logo" src="/Jayann_Store/assets/img/storenijayann.png" alt="" width="56" height="56">
+                <img class="auth__logo" src="<?= BASE_URL ?>assets/img/storenijayann.png" alt="" width="56" height="56">
                 <h1>Welcome back</h1>
                 <p>Log in to continue shopping with us.</p>
             </div>
