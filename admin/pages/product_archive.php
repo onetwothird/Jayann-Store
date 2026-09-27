@@ -141,7 +141,7 @@ require __DIR__ . '/../../app/views/admin/head.php';
                     <tr>
                         <td>
                             <span class="cellproduct">
-                                <img src="../<?= e(product_image($r['image'])) ?>" alt="" loading="lazy">
+                                <img src="<?= e(product_image($r['image'])) ?>" alt="" loading="lazy">
                                 <span>
                                     <strong><?= e($r['name']) ?></strong>
                                     <small>Archive
