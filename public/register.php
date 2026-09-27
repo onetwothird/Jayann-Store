@@ -106,7 +106,7 @@ require '../app/views/layout/head.php';
                     <label class="field__label" for="address">Delivery address <span class="field__opt">optional</span></label>
                     <textarea class="textarea" id="address" name="address" rows="2" maxlength="500"
                               autocomplete="street-address"
-                              placeholder="House no. &amp; street, barangay, Ternate, Cavite"></textarea>
+                              placeholder="House no. &amp; street, barangay, Naic, Cavite"></textarea>
                 </div>
 
                 <div class="field">

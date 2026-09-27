@@ -92,7 +92,7 @@ require '../app/views/layout/head.php';
                 <div class="field">
                     <label class="field__label" for="city">City / municipality</label>
                     <input class="input" type="text" id="city" name="city" required maxlength="80"
-                           autocomplete="address-level2" placeholder="Ternate"
+                           autocomplete="address-level2" placeholder="Naic"
                            value="<?= e($fCity) ?>">
                 </div>
 

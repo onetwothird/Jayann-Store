@@ -161,7 +161,7 @@ require '../app/views/layout/head.php';
                     </span>
                     <div class="timeline__body">
                         <strong>Out for delivery</strong>
-                        <small>Delivery within 1&ndash;2 days in Ternate, Cavite.</small>
+                        <small>Delivery within 1&ndash;2 days in Naic, Cavite.</small>
                     </div>
                 </div>
             </div>
