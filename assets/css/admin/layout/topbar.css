@@ -1,0 +1,33 @@
+.topbar {
+position: sticky; top: 0; z-index: 900;
+min-height: var(--topbar-h);
+background: rgba(255, 255, 255, .85);
+backdrop-filter: blur(8px);
+border-bottom: 1px solid var(--border);
+}
+
+.topbar__inner {
+display: flex; align-items: center; gap: var(--sp-4);
+min-height: var(--topbar-h);
+padding-inline: var(--sp-6);
+width: 100%;
+max-width: var(--admin-content-max, 1760px);
+margin-inline: auto;
+}
+
+.topbar__title { font-size: var(--fs-lg); font-weight: 700; letter-spacing: -.02em; }
+
+.topbar__sub   { font-size: var(--fs-xs); color: var(--text-muted); }
+
+.topbar__right { margin-left: auto; display: flex; align-items: center; gap: var(--sp-2); }
+
+.iconbtn {
+width: 2.25rem; height: 2.25rem; border-radius: var(--r-md);
+display: grid; place-items: center;
+color: var(--gray-600); font-size: var(--fs-lg);
+transition: background-color var(--tr), color var(--tr);
+}
+
+.iconbtn:hover { background: var(--gray-100); color: var(--brand-600); }
+
+.topbar__burger { display: none; }
