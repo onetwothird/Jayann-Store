@@ -106,11 +106,11 @@ require __DIR__ . '/../../app/views/admin/head.php';
                             <tr>
                                 <td>
                                     <span class="cellproduct">
-                                        <img src="../<?= e(product_image($line['image'])) ?>" alt="" loading="lazy">
+                                        <img src="<?= e(product_image($line['image'])) ?>" alt="" loading="lazy">
                                         <span><strong><?= e($line['name']) ?></strong></span>
                                     </span>
                                 </td>
-                                <td class="num"><?= $line['unit'] !== null ? e(money($line['unit'])) : 'â€”' ?></td>
+                                <td class="num"><?= $line['unit'] !== null ? e(money($line['unit'])) : '—' ?></td>
                                 <td class="num"><?= (int) $line['quantity'] ?></td>
                                 <td class="num">
                                     <?php if ($line['unit'] !== null): ?>
