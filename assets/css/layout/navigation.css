@@ -1,20 +1,69 @@
-.catnav { border-top: 1px solid var(--border); background: var(--surface); }
+.catnav { border-top: 1px solid var(--border); background: var(--surface); position: relative; }
 
 .catnav__inner {
 display: flex; align-items: center; gap: var(--sp-1);
 overflow-x: auto; scrollbar-width: none;
 -ms-overflow-style: none;
+-webkit-overflow-scrolling: touch;
+scroll-snap-type: x mandatory;
+padding-block: var(--sp-1);
 }
 
 .catnav__inner::-webkit-scrollbar { display: none; }
 
+/* Swipe/fade indicators */
+.catnav::before,
+.catnav::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 60px;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity var(--transition);
+}
+
+.catnav::before {
+    left: 0;
+    background: linear-gradient(90deg, var(--surface) 0%, transparent 100%);
+}
+
+.catnav::after {
+    right: 0;
+    background: linear-gradient(270deg, var(--surface) 0%, transparent 100%);
+}
+
+.catnav.has-scroll-start::before { opacity: 1; }
+.catnav.has-scroll-end::after { opacity: 1; }
+
+/* Scroll hint dots (mobile) */
+@media (max-width: 768px) {
+    .catnav::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        width: 40px;
+        background: linear-gradient(270deg, var(--surface) 0%, transparent 100%);
+    }
+    
+    .catnav__inner::after {
+        content: '';
+        flex-shrink: 0;
+        width: 24px;
+    }
+}
+
 .catnav__link {
 position: relative;
 display: inline-flex; align-items: center; gap: var(--sp-2);
-padding: .625rem .75rem;
+padding: .625rem .875rem;
 font-size: var(--fs-sm); font-weight: 600; color: var(--gray-600);
 white-space: nowrap;
 transition: color var(--transition);
+scroll-snap-align: start;
+flex-shrink: 0;
+min-height: 2.75rem;
 }
 
 .catnav__link::after {
