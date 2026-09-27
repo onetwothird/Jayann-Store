@@ -90,6 +90,12 @@ $searchQ = trim((string) ($_GET['q'] ?? ''));
         </form>
 
         <div class="header__actions">
+            <nav class="header__nav" aria-label="Main navigation">
+                <a href="about.php" class="header__nav-link<?= $currentPage === 'about.php' ? ' is-active' : '' ?>">
+                    <i class="fa-solid fa-circle-info" aria-hidden="true"></i> About us
+                </a>
+            </nav>
+
             <a href="<?= BASE_URL ?>public/cart.php" class="iconbtn" aria-label="Cart, <?= (int) $cartNum ?> items">
                 <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
                 <span class="badge-count" data-cart-count><?= (int) $cartNum ?></span>
