@@ -111,7 +111,7 @@ require __DIR__ . '/../../app/views/admin/head.php';
                         <td style="white-space:nowrap"><?= e($u['number']) ?></td>
                         <td style="max-width:16rem">
                             <span style="display:block;color:var(--text-muted);font-size:var(--fs-sm)">
-                                <?= $u['address'] !== '' ? e($u['address']) : 'â€”' ?>
+                                <?= $u['address'] !== '' ? e($u['address']) : '—' ?>
                             </span>
                         </td>
                         <td class="num">
