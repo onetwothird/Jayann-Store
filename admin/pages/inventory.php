@@ -291,7 +291,7 @@ require __DIR__ . '/../../app/views/admin/head.php';
                             : '<a class="btn btn--sm" href="products.php#add-product">Add a product</a>'
                     ) ?>
                 <?php else: ?>
-                <div class="tablewrap">
+                <div class="tablewrap inventory-table">
                     <table class="table">
                         <thead>
                             <tr>
@@ -316,7 +316,7 @@ require __DIR__ . '/../../app/views/admin/head.php';
                             $focusRow  = $focus === $pid;
                             ?>
                             <tr<?= $focusRow ? ' class="is-focused"' : '' ?>>
-                                <td>
+                                <td data-label="Product">
                                     <span class="cellproduct">
                                         <img src="<?= e(product_image($p['image'])) ?>" alt="" loading="lazy">
                                         <span>
@@ -330,7 +330,7 @@ require __DIR__ . '/../../app/views/admin/head.php';
                                         </span>
                                     </span>
                                 </td>
-                                <td class="num">
+                                <td class="num" data-label="On hand">
                                     <strong style="font-size:var(--fs-lg)"><?= e(number_format($stock)) ?></strong>
                                     <?php if ($threshold > 0): ?>
                                         <div class="stockmeter" role="img"
@@ -340,16 +340,16 @@ require __DIR__ . '/../../app/views/admin/head.php';
                                         </div>
                                     <?php endif; ?>
                                 </td>
-                                <td class="num"><?= $threshold > 0 ? e(number_format($threshold)) : '<span style="color:var(--text-soft)">—</span>' ?></td>
-                                <td class="num"><?= e(money($p['cost_price'])) ?></td>
-                                <td class="num"><strong><?= e(money($value)) ?></strong></td>
-                                <td>
+                                <td class="num" data-label="Reorder at"><?= $threshold > 0 ? e(number_format($threshold)) : '<span style="color:var(--text-soft)">—</span>' ?></td>
+                                <td class="num" data-label="Unit cost"><?= e(money($p['cost_price'])) ?></td>
+                                <td class="num" data-label="Stock value"><strong><?= e(money($value)) ?></strong></td>
+                                <td data-label="Status">
                                     <span class="tag tag--<?= e($status['tag']) ?>">
                                         <i class="fa-solid <?= e($status['icon']) ?>" aria-hidden="true"></i>
                                         <?= e($status['label']) ?>
                                     </span>
                                 </td>
-                                <td class="num">
+                                <td class="num" data-label="Receive">
                                     <form class="restock" method="post" action="inventory.php">
                                         <input type="hidden" name="form_action" value="restock">
                                         <input type="hidden" name="id" value="<?= $pid ?>">
@@ -453,13 +453,19 @@ require __DIR__ . '/../../app/views/admin/head.php';
                 <?= admin_empty('fa-circle-check', 'Stock is healthy', 'Nothing is at or below its reorder threshold.') ?>
             <?php else: ?>
             <div class="card__body card__body--flush">
-                <div class="tablewrap">
+                <div class="tablewrap reorder-table">
                     <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Product</th>
+                                <th scope="col" class="num">Status & Receive</th>
+                            </tr>
+                        </thead>
                         <tbody>
                         <?php foreach ($reorder as $p): ?>
                             <?php $st = stock_status((int) $p['stock'], (int) $p['low_stock_threshold']); ?>
                             <tr>
-                                <td>
+                                <td data-label="Product">
                                     <span class="cellproduct">
                                         <img src="<?= e(product_image($p['image'])) ?>" alt="" loading="lazy">
                                         <span>
@@ -468,7 +474,7 @@ require __DIR__ . '/../../app/views/admin/head.php';
                                         </span>
                                     </span>
                                 </td>
-                                <td class="num">
+                                <td class="num" data-label="Status & Receive">
                                     <span class="tag tag--<?= e($st['tag']) ?>"><?= e($st['label']) ?></span>
                                     <br>
                                     <form class="restock restock--stacked" method="post" action="inventory.php">
