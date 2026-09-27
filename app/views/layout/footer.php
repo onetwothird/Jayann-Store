@@ -9,7 +9,7 @@ $store = $config['store'];
         <div class="container trust__grid">
             <div class="trust__item">
                 <i class="fa-solid fa-truck-fast" aria-hidden="true"></i>
-                <div><strong>Fast delivery</strong><span>Metro Manila in 1â€“2 days</span></div>
+                <div><strong>Fast delivery</strong><span>Metro Manila in 1–2 days</span></div>
             </div>
             <div class="trust__item">
                 <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
@@ -28,8 +28,8 @@ $store = $config['store'];
 
     <div class="container footer__grid">
         <div class="footer__brand">
-            <a href="/Jayann_Store/public/home.php" class="brand brand--footer">
-                <img src="/Jayann_Store/assets/img/storenijayann.png" alt="" class="brand__logo" width="52" height="52">
+            <a href="<?= BASE_URL ?>public/home.php" class="brand brand--footer">
+                <img src="<?= BASE_URL ?>assets/img/storenijayann.png" alt="<?= e($store['name']) ?> logo" class="brand__logo" width="52" height="52">
                 <span class="brand__text"><strong><?= e($store['name']) ?></strong></span>
             </a>
             <p><?= e($store['tagline']) ?>. Supporting a neighbourhood business in <?= e($store['address']) ?>.</p>
@@ -47,10 +47,10 @@ $store = $config['store'];
         <nav class="footer__col" aria-labelledby="ftShop">
             <h3 id="ftShop">Shop</h3>
             <ul>
-                <li><a href="/Jayann_Store/public/products.php">All products</a></li>
-                <li><a href="/Jayann_Store/public/discounted_products.php">On sale</a></li>
+                <li><a href="<?= BASE_URL ?>public/products.php">All Products</a></li>
+                <li><a href="<?= BASE_URL ?>public/discounted_products.php">On sale</a></li>
                 <?php foreach (array_slice(product_categories(), 0, 4) as $catRow): ?>
-                    <li><a href="/Jayann_Store/public/category.php?category=<?= urlencode($catRow['category']) ?>"><?= e($catRow['category']) ?></a></li>
+                    <li><a href="<?= BASE_URL ?>public/category.php?category=<?= urlencode($catRow['category']) ?>"><?= e($catRow['category']) ?></a></li>
                 <?php endforeach; ?>
             </ul>
         </nav>
@@ -58,23 +58,23 @@ $store = $config['store'];
         <nav class="footer__col" aria-labelledby="ftAccount">
             <h3 id="ftAccount">My account</h3>
             <ul>
-                <li><a href="/Jayann_Store/public/login.php">Log in</a></li>
-                <li><a href="/Jayann_Store/public/register.php">Create account</a></li>
-                <li><a href="/Jayann_Store/public/profile.php">My profile</a></li>
-                <li><a href="/Jayann_Store/public/orders.php">My orders</a></li>
-                <li><a href="/Jayann_Store/public/cart.php">My cart</a></li>
+                <li><a href="<?= BASE_URL ?>public/login.php">Log in</a></li>
+                <li><a href="<?= BASE_URL ?>public/register.php">Create account</a></li>
+                <li><a href="<?= BASE_URL ?>public/profile.php">My profile</a></li>
+                <li><a href="<?= BASE_URL ?>public/orders.php">My orders</a></li>
+                <li><a href="<?= BASE_URL ?>public/cart.php">My cart</a></li>
             </ul>
         </nav>
 
         <nav class="footer__col" aria-labelledby="ftHelp">
             <h3 id="ftHelp">Customer care</h3>
             <ul>
-                <li><a href="/Jayann_Store/public/contact.php">Contact us</a></li>
-                <li><a href="/Jayann_Store/public/about.php">About the store</a></li>
-                <li><a href="contact.php#faq">Shipping &amp; delivery</a></li>
-                <li><a href="contact.php#faq">Returns &amp; refunds</a></li>
-                <li><a href="contact.php#faq">Track my order</a></li>
-                <li><a href="/Jayann_Store/admin/pages/admin_login.php">Staff portal</a></li>
+                <li><a href="<?= BASE_URL ?>public/contact.php">Contact us</a></li>
+                <li><a href="<?= BASE_URL ?>public/about.php">About the store</a></li>
+                <li><a href="<?= BASE_URL ?>public/contact.php#faq">Shipping &amp; delivery</a></li>
+                <li><a href="<?= BASE_URL ?>public/contact.php#faq">Returns &amp; refunds</a></li>
+                <li><a href="<?= BASE_URL ?>public/contact.php#faq">Track my order</a></li>
+                <li><a href="<?= BASE_URL ?>admin/pages/admin_login.php">Staff portal</a></li>
             </ul>
         </nav>
     </div>
@@ -91,7 +91,7 @@ $store = $config['store'];
             <div class="footer__pay">
                 <span class="footer__pay-label">
                     We accept<?= $freeOver > 0
-                        ? ' â€” free delivery over ' . e($store['currency'] . number_format($freeOver))
+                        ? ' — free delivery over ' . e($store['currency'] . number_format($freeOver))
                         : '' ?>
                 </span>
                 <ul class="footer__pay-list">
@@ -141,7 +141,7 @@ $store = $config['store'];
 <?php if (!empty($scripts)): foreach ((array) $scripts as $extra): ?>
 <script src="<?= e($extra) ?>" defer></script>
 <?php endforeach; endif; ?>
-<script src="assets/js/script.js?v=2.0" defer></script>
+<script src="<?= BASE_URL ?>assets/js/script.js?v=2.0" defer></script>
 </body>
 </html>
 
