@@ -114,7 +114,7 @@ require '../app/views/layout/head.php';
                 </div>
 
                 <div class="contact__media">
-                    <img src="/Jayann_Store/assets/img/contact-img.svg" alt="Chat with the store">
+                    <img src="<?= BASE_URL ?>assets/img/contact-img.svg" alt="Chat with the store">
                 </div>
             </div>
 
