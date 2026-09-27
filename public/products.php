@@ -7,7 +7,7 @@ include '../app/cart_actions.php';
 include '../app/views/shop/catalog.php';
 
 $pageTitle = 'All products';
-$pageDesc  = 'Browse every product at Jayann\'s Store Ã¢â‚¬â€ beverages, snacks, essentials and personal care.';
+$pageDesc  = 'Browse every product at Jayann\'s Store — beverages, snacks, essentials and personal care.';
 $pageClass = 'page-products';
 
 require '../app/views/layout/head.php';
