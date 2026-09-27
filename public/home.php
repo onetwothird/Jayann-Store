@@ -17,22 +17,16 @@ $cats = $db->all(
     "SELECT category, COUNT(*) AS n FROM products GROUP BY category ORDER BY category"
 );
 $catImages = [
-    'Beverages'   => 'assets/img/drinks.png',
-    'Snacks'      => 'assets/img/snack.png',
-    'Essentials'  => 'assets/img/must-have.png',
-    'Personal Care' => 'assets/img/personal-care.png',
-];
-$catBlurbs = [
-    'Beverages'     => 'Drinks & refreshers',
-    'Snacks'        => 'Chips & treats',
-    'Essentials'    => 'Everyday staples',
-    'Personal Care' => 'Hygiene & beauty',
+    'Beverages'   => BASE_URL . 'assets/img/drinks.png',
+    'Snacks'      => BASE_URL . 'assets/img/snack.png',
+    'Essentials'  => BASE_URL . 'assets/img/must-have.png',
+    'Personal Care' => BASE_URL . 'assets/img/personal-care.png',
 ];
 
 $promos = [
-    ['assets/img/promo2.png', 'Fresh restocks every week', 'Beverages, snacks and household staples delivered to your door in Ternate, Cavite.', 'Shop beverages'],
-    ['assets/img/promo4.png', 'Groceries without the trip', 'Skip the queue. Browse our full catalogue, fill your cart, and we handle the rest.', 'Browse all products'],
-    ['assets/img/promo3.png', 'Deals you can actually use', 'Real discounts on everyday favourites Ã¢â‚¬â€ updated weekly, while stocks last.', 'See todayÃ¢â‚¬â„¢s deals'],
+    [BASE_URL . 'assets/img/promo2.png', 'Fresh restocks every week', 'Beverages, snacks and household staples delivered to your door in Ternate, Cavite.', 'Shop beverages'],
+    [BASE_URL . 'assets/img/promo4.png', 'Groceries without the trip', 'Skip the queue. Browse our full catalogue, fill your cart, and we handle the rest.', 'Browse all products'],
+    [BASE_URL . 'assets/img/promo3.png', 'Deals you can actually use', 'Real discounts on everyday favourites — updated weekly, while stocks last.', 'See today’s deals'],
 ];
 
 $productCount = (int) $db->value('SELECT COUNT(*) FROM products');
@@ -86,12 +80,12 @@ require '../app/views/layout/head.php';
     <div class="cats">
         <?php foreach ($cats as $row):
             $cat = $row['category'];
-            $img = $catImages[$cat] ?? 'assets/img/storenijayann.png';
+            $img = $catImages[$cat] ?? BASE_URL . 'assets/img/storenijayann.png';
         ?>
         <a class="cats__tile" href="category.php?category=<?= urlencode($cat) ?>">
             <img src="<?= e($img) ?>" alt="" loading="lazy" decoding="async">
             <strong><?= e($cat) ?></strong>
-            <span><?= e($catBlurbs[$cat] ?? 'Browse range') ?> &middot; <?= (int) $row['n'] ?> items</span>
+            <span><?= e(category_blurb($cat)) ?> &middot; <?= (int) $row['n'] ?> items</span>
         </a>
         <?php endforeach; ?>
     </div>
