@@ -3,6 +3,7 @@ width: 100%;
 max-width: var(--container);
 margin-inline: auto;
 padding-inline: var(--sp-5);
+padding-bottom: 4px;
 }
 
 .section { padding-block: var(--sp-12); }
