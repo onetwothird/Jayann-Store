@@ -16,7 +16,10 @@
 
     const setOpen = (open) => {
       sidebar.classList.toggle('is-open', open);
-      if (scrim) scrim.classList.toggle('is-open', open);
+      if (scrim) {
+        scrim.classList.toggle('is-open', open);
+        scrim.hidden = !open;
+      }
       document.body.style.overflow = open ? 'hidden' : '';
       openers.forEach((b) => b.setAttribute('aria-expanded', String(open)));
     };
