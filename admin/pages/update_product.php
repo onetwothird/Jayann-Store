@@ -198,7 +198,7 @@ require __DIR__ . '/../../app/views/admin/head.php';
                 <div class="card__body">
                     <div class="imagefield" style="margin-bottom:var(--sp-4)">
                         <span class="imagefield__preview" id="preview">
-                            <img src="../<?= e(product_image($product['image'])) ?>" alt="Current product photo">
+                            <img src="<?= e(product_image($product['image'])) ?>" alt="Current product photo">
                         </span>
                         <div>
                             <p class="field__label" style="margin-bottom:var(--sp-1)">Current image</p>
