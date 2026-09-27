@@ -1,0 +1,35 @@
+.auth {
+min-height: 100vh;
+display: grid; place-items: center;
+padding: var(--sp-6);
+background:
+radial-gradient(900px 500px at 15% 0%, rgba(238, 77, 45, .16), transparent 55%),
+radial-gradient(800px 500px at 100% 100%, rgba(245, 158, 11, .14), transparent 55%),
+var(--gray-900);
+}
+
+.auth__card {
+width: min(26rem, 100%);
+background: var(--surface);
+border-radius: var(--r-xl);
+box-shadow: var(--sh-lg);
+padding: var(--sp-8);
+}
+
+.auth__head { text-align: center; margin-bottom: var(--sp-6); }
+
+.auth__head img { margin: 0 auto var(--sp-3); }
+
+.auth__head h1 { font-size: var(--fs-2xl); letter-spacing: -.03em; }
+
+.auth__head p  { color: var(--text-muted); font-size: var(--fs-md); margin-top: var(--sp-1); }
+
+.auth__foot { text-align: center; margin-top: var(--sp-5); font-size: var(--fs-md); color: var(--text-muted); }
+
+.auth__foot a { color: var(--brand-600); font-weight: 600; }
+
+.auth__foot a:hover { text-decoration: underline; }
+
+.auth__back { display: block; text-align: center; margin-top: var(--sp-4); font-size: var(--fs-sm); color: var(--gray-500); }
+
+.auth__back a { color: var(--brand-600); font-weight: 600; }
