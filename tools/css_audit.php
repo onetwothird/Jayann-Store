@@ -3,10 +3,8 @@
 declare(strict_types=1);
 
 $root  = dirname(__DIR__);
-$files = [
-    $root . '/assets/css/style.css',
-    $root . '/assets/css/admin_style.css',
-];
+require __DIR__ . '/css_manifest.php';
+$files = array_merge(css_manifest_files('storefront', $root), css_manifest_files('admin', $root));
 
 function spec_of(string $selector): int
 {
