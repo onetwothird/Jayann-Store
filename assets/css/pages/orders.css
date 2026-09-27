@@ -1,0 +1,168 @@
+.orderlist { display: grid; gap: var(--sp-4); }
+
+.ordercard {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--r-lg);
+overflow: hidden;
+transition: box-shadow var(--transition), border-color var(--transition);
+}
+
+.ordercard:hover { box-shadow: var(--sh-md); border-color: var(--brand-200); }
+
+.ordercard__head {
+display: flex; align-items: center; justify-content: space-between; gap: var(--sp-4);
+flex-wrap: wrap;
+padding: var(--sp-3) var(--sp-5);
+background: var(--gray-50);
+border-bottom: 1px solid var(--border);
+font-size: var(--fs-sm);
+}
+
+.ordercard__id { font-weight: 700; font-family: var(--font-mono); font-size: var(--fs-sm); }
+
+.ordercard__body { padding: var(--sp-5); display: grid; gap: var(--sp-4); }
+
+.ordercard__items { font-size: var(--fs-md); color: var(--gray-700); }
+
+.ordercard__foot {
+display: flex; align-items: center; justify-content: space-between; gap: var(--sp-4);
+flex-wrap: wrap;
+padding: var(--sp-4) var(--sp-5);
+border-top: 1px solid var(--border);
+background: var(--surface-alt);
+}
+
+.ordercard__total { display: flex; align-items: baseline; gap: var(--sp-2); }
+
+.ordercard__total span { font-size: var(--fs-sm); color: var(--text-muted); }
+
+.ordercard__total b { font-size: var(--fs-xl); font-weight: 800; color: var(--brand-600); letter-spacing: -.02em; }
+
+.ordercard__actions { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+
+.status {
+display: inline-flex; align-items: center; gap: .375rem;
+padding: .25rem .625rem; border-radius: var(--r-full);
+font-size: var(--fs-xs); font-weight: 700;
+}
+
+.status::before { content: ''; width: 6px; height: 6px; border-radius: var(--r-full); background: currentColor; }
+
+.status--pending   { background: var(--warn-50);    color: #92400e; }
+
+.status--paid      { background: var(--success-50); color: var(--success-700); }
+
+.status--completed { background: var(--info-50);    color: var(--info-700); }
+
+.status--failed,
+.status--cancelled { background: var(--danger-50);  color: var(--danger-600); }
+
+.receipt { max-width: 46rem; margin-inline: auto; }
+
+.receipt__head { text-align: center; padding: var(--sp-8) var(--sp-6); border-bottom: 1px dashed var(--border-strong); }
+
+.receipt__logo { width: 5rem; height: 5rem; object-fit: contain; margin: 0 auto var(--sp-3); }
+
+.receipt__title { font-size: var(--fs-2xl); letter-spacing: -.02em; }
+
+.receipt__sub { color: var(--text-muted); font-size: var(--fs-sm); margin-top: var(--sp-1); }
+
+.receipt__grid {
+display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+gap: var(--sp-4); padding: var(--sp-6);
+}
+
+.receipt__cell { display: flex; flex-direction: column; gap: 2px; }
+
+.receipt__cell dt { font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: .06em; color: var(--text-soft); font-weight: 600; }
+
+.receipt__cell dd { font-size: var(--fs-md); font-weight: 500; word-break: break-word; }
+
+.receipt__foot { padding: var(--sp-6); border-top: 1px dashed var(--border-strong); display: flex; gap: var(--sp-3); flex-wrap: wrap; justify-content: center; }
+
+.timeline { display: grid; gap: var(--sp-4); padding: var(--sp-6); }
+
+.timeline__row { display: flex; gap: var(--sp-4); align-items: flex-start; }
+
+.timeline__dot {
+width: 2rem; height: 2rem; flex-shrink: 0; border-radius: var(--r-full);
+display: grid; place-items: center; font-size: var(--fs-xs);
+background: var(--gray-100); color: var(--text-soft);
+}
+
+.timeline__dot.is-done { background: var(--success-50); color: var(--success-500); }
+
+.timeline__dot.is-now  { background: var(--brand-500); color: #fff; }
+
+.timeline__body strong { display: block; font-size: var(--fs-md); }
+
+.timeline__body small  { color: var(--text-muted); }
+
+.orderitems { list-style: none; display: grid; gap: var(--sp-3); }
+
+.orderitem {
+display: flex; align-items: center; gap: var(--sp-3);
+}
+
+.orderitem__img {
+width: 3.25rem; height: 3.25rem; flex-shrink: 0;
+border-radius: var(--r-md); background: var(--gray-50);
+object-fit: contain; padding: var(--sp-1);
+border: 1px solid var(--border);
+}
+
+.orderitem__body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+
+.orderitem__name {
+font-size: var(--fs-md); font-weight: 500; line-height: 1.4;
+display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+.orderitem__qty { font-size: var(--fs-xs); color: var(--text-muted); }
+
+.orderitem__price { font-size: var(--fs-md); font-weight: 700; white-space: nowrap; }
+
+.orderlist--tight { gap: var(--sp-2); margin-bottom: var(--sp-5); padding-bottom: var(--sp-5); border-bottom: 1px solid var(--border); }
+
+.orderlist--tight .orderitem__img { width: 2.75rem; height: 2.75rem; }
+
+.ordermeta {
+display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+gap: var(--sp-4);
+padding-top: var(--sp-4); border-top: 1px solid var(--border);
+}
+
+.ordermeta dt { font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: .06em; color: var(--text-soft); font-weight: 600; }
+
+.ordermeta dd { font-size: var(--fs-md); margin-top: 2px; word-break: break-word; }
+
+.ordermeta code { font-family: var(--font-mono); font-size: var(--fs-sm); background: var(--gray-100); padding: 1px 5px; border-radius: var(--r-xs); }
+
+.ordercard__ident { display: flex; align-items: baseline; gap: var(--sp-3); flex-wrap: wrap; }
+
+.ordercard__date { color: var(--text-muted); }
+
+.dl__save { color: var(--success-700) !important; }
+
+.receipt__ref {
+display: inline-flex; align-items: center; gap: var(--sp-2);
+margin: var(--sp-4) 0 var(--sp-3);
+padding: var(--sp-2) var(--sp-2) var(--sp-2) var(--sp-4);
+background: var(--gray-50); border: 1px solid var(--border); border-radius: var(--r-full);
+}
+
+.receipt__reflabel { font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: .06em; color: var(--text-soft); font-weight: 600; }
+
+.receipt__ref strong { font-family: var(--font-mono); font-size: var(--fs-md); }
+
+.receipt__cell--wide { grid-column: 1 / -1; }
+
+.receipt__totals {
+display: flex; justify-content: flex-end;
+padding: var(--sp-5) var(--sp-6);
+border-top: 1px dashed var(--border-strong);
+background: var(--surface-alt);
+}
+
+.receipt__totals .dl { width: min(22rem, 100%); }
