@@ -100,6 +100,95 @@ scrollbar-width: thin;
 .empty { padding: var(--sp-8) var(--sp-4); }
 }
 
+@media (max-width: 768px) {
+.products-table .table thead,
+.orders-table .table thead,
+.inventory-table .table thead,
+.reorder-table .table thead,
+.messages-table .table thead { display: none; }
+
+.products-table .table tbody tr,
+.orders-table .table tbody tr,
+.inventory-table .table tbody tr,
+.reorder-table .table tbody tr,
+.messages-table .table tbody tr { display: block; padding: var(--sp-4) 0; border-bottom: 1px solid var(--border); }
+
+.products-table .table tbody tr:last-child,
+.orders-table .table tbody tr:last-child,
+.inventory-table .table tbody tr:last-child,
+.reorder-table .table tbody tr:last-child,
+.messages-table .table tbody tr:last-child { border-bottom: 0; }
+
+.products-table .table td,
+.orders-table .table td,
+.inventory-table .table td,
+.reorder-table .table td,
+.messages-table .table td { display: flex; justify-content: space-between; gap: var(--sp-4); padding: var(--sp-2) 0; border: 0; }
+
+.products-table .table td::before,
+.orders-table .table td::before,
+.inventory-table .table td::before,
+.reorder-table .table td::before,
+.messages-table .table td::before { content: attr(data-label); font-weight: 600; color: var(--text-muted); flex: 0 0 auto; }
+
+.products-table .table td.num,
+.orders-table .table td.num,
+.inventory-table .table td.num,
+.reorder-table .table td.num,
+.messages-table .table td.num { text-align: right; }
+
+.products-table .cellproduct,
+.inventory-table .cellproduct,
+.reorder-table .cellproduct,
+.messages-table .cellproduct { min-width: 0; width: 100%; }
+.products-table .cellproduct img,
+.inventory-table .cellproduct img,
+.reorder-table .cellproduct img { width: 3rem; height: 3rem; }
+
+.products-table .rowactions,
+.orders-table .rowactions,
+.inventory-table .restock,
+.reorder-table .restock,
+.messages-table .rowactions { width: 100%; justify-content: flex-start; flex-wrap: wrap; }
+
+.products-table .rowactions .btn,
+.orders-table .rowactions .btn,
+.inventory-table .restock .btn,
+.reorder-table .restock .btn,
+.messages-table .rowactions .btn { flex: 1 1 auto; min-width: 80px; justify-content: center; }
+
+.orders-table .rowactions form { flex: 1 1 100%; }
+.orders-table .rowactions .select { flex: 1; min-width: 120px; }
+
+.inventory-table .restock__qty,
+.inventory-table .restock__ref,
+.reorder-table .restock__qty { flex: 1; min-width: 100px; }
+
+.messages-table .rowactions form { flex: 1 1 auto; }
+}
+
+@media (max-width: 768px) {
+.admin__body { padding: var(--sp-4); }
+.qv, .panel--product .qv { 
+    grid-template-columns: 1fr; 
+    gap: var(--sp-4); 
+    padding: var(--sp-4); 
+}
+.qv__media { max-height: min(40vh, 22rem); padding: var(--sp-4); }
+.qv__body { gap: var(--sp-3); }
+.qv__name { font-size: var(--fs-xl); }
+.qv__price b { font-size: var(--fs-2xl); }
+.qv__meta { gap: var(--sp-2); font-size: var(--fs-sm); }
+.qv__meta div { flex-direction: column; gap: var(--sp-1); padding-bottom: var(--sp-2); }
+.qv__meta dd { text-align: left; }
+.qv__buy { flex-direction: column; align-items: stretch; margin-top: var(--sp-3); }
+.qv__buy .qty-input { width: 100%; min-height: 2.75rem; font-size: var(--fs-md); }
+.qv__buy .btn { width: 100%; min-height: 2.75rem; }
+.qvrelated { padding: var(--sp-4); }
+.qvrelated .pgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.trustlist { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-2) var(--sp-4); }
+}
+
 @media (max-width: 480px) {
 .admin__body { padding: var(--sp-3); }
 
@@ -118,6 +207,29 @@ scrollbar-width: thin;
 
 .imagefield { flex-direction: column; align-items: flex-start; }
 .imagefield__preview { width: 100%; max-width: 12rem; }
+
+.formgrid { grid-template-columns: 1fr; }
+.field--full { grid-column: auto; }
+.input, .select, .textarea { font-size: 16px; }
+
+.card__body { padding: var(--sp-3); }
+.card__head { flex-direction: column; align-items: stretch; gap: var(--sp-2); }
+.card__head .tag { align-self: flex-start; }
+
+.filters { gap: var(--sp-2); flex-wrap: wrap; }
+.chip { padding: .375rem .75rem; font-size: var(--fs-xs); }
+.searchinline { width: 100%; flex-basis: 100%; }
+.filters__count { margin-left: 0; flex-basis: 100%; }
+
+.modal__panel { width: 100%; max-height: 95dvh; }
+.qv, .panel--product .qv { padding: var(--sp-3); gap: var(--sp-3); }
+.qv__media { max-height: min(30vh, 16rem); padding: var(--sp-3); }
+.qv__name { font-size: var(--fs-lg); }
+.qv__price b { font-size: var(--fs-xl); }
+.qv__buy { margin-top: var(--sp-2); }
+.qvrelated { padding: var(--sp-3); }
+.qvrelated .pgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.trustlist { grid-template-columns: 1fr; gap: var(--sp-2); }
 }
 
 @media (max-width: 380px) {
@@ -128,6 +240,20 @@ scrollbar-width: thin;
 .page-head h1 { font-size: var(--fs-xl); }
 .table { min-width: 30rem; }
 .auth__card { padding: var(--sp-4); }
+}
+
+@media (max-width: 344px) {
+.admin__body { padding: var(--sp-1); }
+.card__body { padding: var(--sp-2); }
+.stat { padding: var(--sp-2); }
+.stat__value { font-size: var(--fs-md); }
+.page-head h1 { font-size: var(--fs-lg); }
+.table { min-width: 25rem; }
+.auth__card { padding: var(--sp-3); }
+.table th, .table td { padding: var(--sp-1); font-size: 11px; }
+.btn { padding-inline: var(--sp-2); font-size: 11px; }
+.cellproduct { max-width: 6rem; }
+.topbar__actions { gap: 0; }
 }
 
 @media (max-width: 1024px) and (orientation: landscape) and (max-height: 480px) {
@@ -156,6 +282,11 @@ scrollbar-width: thin;
 .statgrid--compact .stat__value { font-size: var(--fs-lg); }
 }
 
+@media (max-width: 344px) {
+.statgrid--compact .stat { padding: var(--sp-1); gap: var(--sp-1); }
+.statgrid--compact .stat__value { font-size: var(--fs-md); }
+}
+
 @media (max-width: 768px) {
 .row-expand .field--full { grid-column: auto; }
 }
@@ -175,6 +306,10 @@ scrollbar-width: thin;
 @media (max-width: 380px) {
 .movelist > li { flex-wrap: wrap; }
 .movelist__figures { margin-left: auto; text-align: right; }
+}
+
+@media (max-width: 344px) {
+.movelist > li { padding-inline: var(--sp-1); gap: var(--sp-1); }
 }
 
 @media print {
@@ -226,6 +361,13 @@ padding-inline: var(--sp-3);
 .topbar__actions { gap: var(--sp-1); }
 .page-head__actions .btn { padding-inline: var(--sp-2); }
 }
+
+@media (max-width: 344px) {
+.table { font-size: 11px; }
+.table th, .table td { padding: var(--sp-1); }
+.cellproduct { max-width: 6rem; }
+}
+
 
 @supports (padding: max(0px)) {
 .topbar__inner { padding-top: calc(var(--sp-4) + env(safe-area-inset-top)); }
