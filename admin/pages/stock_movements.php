@@ -155,7 +155,7 @@ require __DIR__ . '/../../app/views/admin/head.php';
 
     <label class="sr-only" for="fm-product">Product</label>
     <select class="select" id="fm-product" name="product" data-auto-submit>
-        <option value="0">All products</option>
+        <option value="0">All Products</option>
         <?php foreach ($products as $p): ?>
             <option value="<?= (int) $p['id'] ?>"<?= $productId === (int) $p['id'] ? ' selected' : '' ?>>
                 <?= e($p['sku']) ?> &middot; <?= e($p['name']) ?>
