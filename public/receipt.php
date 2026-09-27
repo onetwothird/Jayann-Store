@@ -54,7 +54,7 @@ require '../app/views/layout/head.php';
         <div class="panel receipt">
 
             <div class="receipt__head">
-                <img class="receipt__logo" src="/Jayann_Store/assets/img/storenijayann.png" alt="">
+                <img class="receipt__logo" src="<?= BASE_URL ?>assets/img/storenijayann.png" alt="">
                 <h1 class="receipt__title">Order receipt</h1>
                 <p class="receipt__sub">
                     <?= e($store['name']) ?> &middot; <?= e($store['address']) ?>
@@ -94,7 +94,7 @@ require '../app/views/layout/head.php';
             </dl>
 
             <div class="tablewrap">
-                <table class="table">
+                <table class="table table--stack">
                     <caption class="sr-only">Items in this order</caption>
                     <thead>
                         <tr>
@@ -107,13 +107,13 @@ require '../app/views/layout/head.php';
                     <tbody>
                         <?php foreach ($lines as $line): ?>
                             <tr>
-                                <td><?= e($line['name']) ?></td>
-                                <td class="num"><?= $line['unit'] !== null ? money($line['unit']) : 'Ã¢â‚¬â€' ?></td>
-                                <td class="num"><?= (int) $line['quantity'] ?></td>
-                                <td class="num">
+                                <td data-label="Item"><?= e($line['name']) ?></td>
+                                <td class="num" data-label="Price"><?= $line['unit'] !== null ? money($line['unit']) : '—' ?></td>
+                                <td class="num" data-label="Qty"><?= (int) $line['quantity'] ?></td>
+                                <td class="num" data-label="Subtotal">
                                     <?= $line['unit'] !== null
                                         ? money($line['unit'] * $line['quantity'])
-                                        : 'Ã¢â‚¬â€' ?>
+                                        : '—' ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
