@@ -24,7 +24,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         $note = trim((string) ($_POST['note'] ?? ''));
 
         if ($qty <= 0) {
-            $errors[] = 'Enter how many units arrived â€” it has to be more than zero.';
+            $errors[] = 'Enter how many units arrived — it has to be more than zero.';
         } else {
             $result = adjust_stock($id, $qty, 'purchase', [
                 'note'      => $note !== '' ? $note : 'Stock received',
@@ -147,7 +147,7 @@ $categories = $db->all('SELECT DISTINCT category FROM products ORDER BY category
 
 $sortOptions = [
     'reorder'     => 'Needs attention first',
-    'name'        => 'Name (Aâ€“Z)',
+    'name'        => 'Name (A–Z)',
     'stock_asc'   => 'Lowest stock',
     'stock_desc'  => 'Highest stock',
     'value_desc'  => 'Highest stock value',
@@ -318,7 +318,7 @@ require __DIR__ . '/../../app/views/admin/head.php';
                             <tr<?= $focusRow ? ' class="is-focused"' : '' ?>>
                                 <td>
                                     <span class="cellproduct">
-                                        <img src="../<?= e(product_image($p['image'])) ?>" alt="" loading="lazy">
+                                        <img src="<?= e(product_image($p['image'])) ?>" alt="" loading="lazy">
                                         <span>
                                             <strong><?= e($p['name']) ?></strong>
                                             <small>
@@ -340,7 +340,7 @@ require __DIR__ . '/../../app/views/admin/head.php';
                                         </div>
                                     <?php endif; ?>
                                 </td>
-                                <td class="num"><?= $threshold > 0 ? e(number_format($threshold)) : '<span style="color:var(--text-soft)">â€”</span>' ?></td>
+                                <td class="num"><?= $threshold > 0 ? e(number_format($threshold)) : '<span style="color:var(--text-soft)">—</span>' ?></td>
                                 <td class="num"><?= e(money($p['cost_price'])) ?></td>
                                 <td class="num"><strong><?= e(money($value)) ?></strong></td>
                                 <td>
@@ -461,7 +461,7 @@ require __DIR__ . '/../../app/views/admin/head.php';
                             <tr>
                                 <td>
                                     <span class="cellproduct">
-                                        <img src="../<?= e(product_image($p['image'])) ?>" alt="" loading="lazy">
+                                        <img src="<?= e(product_image($p['image'])) ?>" alt="" loading="lazy">
                                         <span>
                                             <strong><?= e($p['name']) ?></strong>
                                             <small><?= e($p['sku']) ?></small>
