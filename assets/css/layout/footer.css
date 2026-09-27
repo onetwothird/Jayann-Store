@@ -1,0 +1,136 @@
+.footer { background: var(--surface); border-top: 1px solid var(--border);  }
+
+.trust { background: var(--gray-900); color: var(--gray-300); }
+
+.trust__grid {
+display: grid;
+grid-template-columns: repeat(4, minmax(0, 1fr));
+gap: var(--sp-5) var(--sp-6);
+padding-block: var(--sp-7);
+align-items: start;
+}
+
+.trust__item { display: flex; align-items: baseline; gap: var(--sp-3); min-width: 0; }
+
+.trust__item i {
+font-size: 1.35rem; color: var(--brand-400); flex-shrink: 0;
+width: 1.5rem; line-height: 1.35; text-align: center;
+}
+
+.trust__item > div { min-width: 0; }
+
+.trust__item strong { display: block; color: #fff; font-size: var(--fs-md); line-height: 1.4; }
+
+.trust__item span  { display: block; font-size: var(--fs-xs); line-height: 1.5; }
+
+.footer__grid {
+display: grid;
+grid-template-columns: 1.6fr repeat(3, minmax(0, 1fr));
+gap: var(--sp-7);
+padding-block: var(--sp-10);
+}
+
+.brand--footer { margin-bottom: var(--sp-4); }
+
+.brand--footer .brand__logo { width: 52px; height: 52px; }
+
+.brand--footer .brand__text strong { font-size: var(--fs-xl); }
+
+.footer__brand { --fc-gutter: calc(1rem + var(--sp-3)); }
+
+.footer__brand p { color: var(--text-muted); max-width: 38ch; }
+
+.footer__contact { list-style: none; margin-top: var(--sp-5); display: grid; gap: var(--sp-2); }
+
+.footer__contact li { display: flex; align-items: flex-start; gap: var(--sp-3); font-size: var(--fs-md); color: var(--text-muted); }
+
+.footer__contact i { color: var(--brand-500); margin-top: .25rem; flex-shrink: 0; width: 1rem; }
+
+.footer__contact a:hover { color: var(--brand-600); }
+
+.footer__col h3 { font-size: var(--fs-md); font-weight: 700; margin-bottom: var(--sp-3); }
+
+.footer__col ul {
+list-style: none;
+display: grid;
+gap: var(--sp-1);
+padding-inline-start: 0;
+}
+
+.footer__col a {
+font-size: var(--fs-md); color: var(--text-muted);
+transition: color var(--transition);
+display: inline-block;
+padding-block: var(--sp-1);
+}
+
+.footer__col a:hover { color: var(--brand-600); }
+
+.footer__bar { background: var(--gray-50); border-top: 1px solid var(--border); }
+
+.footer__bar-inner {
+display: flex; align-items: center; justify-content: space-between;
+gap: var(--sp-4) var(--sp-6); flex-wrap: wrap;
+padding-block: var(--sp-5);
+font-size: var(--fs-sm); color: var(--text-muted);
+}
+
+.footer__bar-inner > p { margin: 0; }
+
+.footer__pay { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; }
+
+.footer__pay-label { color: var(--text-muted); }
+
+.footer__pay-list { display: flex; align-items: center; gap: var(--sp-2); list-style: none; flex-wrap: wrap; }
+
+.footer__pay-list li {
+display: grid; place-items: center;
+min-width: 2.375rem; height: 1.75rem; padding-inline: var(--sp-2);
+border: 1px solid var(--border); border-radius: var(--r-sm);
+background: var(--surface); color: var(--gray-600); font-size: var(--fs-sm);
+}
+
+.footer__pay-list li:hover { border-color: var(--brand-300); color: var(--brand-600); }
+
+.social { display: flex; gap: var(--sp-2); list-style: none; margin: 0; flex-wrap: wrap; }
+
+.social a {
+width: 2.125rem; height: 2.125rem; border-radius: var(--r-md);
+display: grid; place-items: center;
+background: var(--gray-100); color: var(--gray-600); font-size: var(--fs-md);
+transition: all var(--transition);
+}
+
+.social a:hover { background: var(--brand-500); color: #fff; transform: translateY(-2px); }
+
+.to-top {
+position: fixed; right: var(--sp-5); bottom: var(--sp-5); z-index: 900;
+width: 2.75rem; height: 2.75rem; border-radius: var(--r-full);
+display: grid; place-items: center;
+background: var(--gray-900); color: #fff; font-size: var(--fs-md);
+box-shadow: var(--sh-lg);
+opacity: 0; visibility: hidden; transform: translateY(12px);
+transition: opacity var(--transition), transform var(--transition), visibility var(--transition), background-color var(--transition);
+}
+
+.to-top.is-visible { opacity: 1; visibility: visible; transform: translateY(0); }
+
+.to-top:hover { background: var(--brand-500); }
+
+.footer__contact li,
+.footer__contact li > a,
+.footer__col,
+.footer__col ul,
+.footer__col li { min-width: 0; }
+
+.footer__contact li,
+.footer__contact li > a,
+.footer__col a,
+.footer__brand p,
+.trust__item strong,
+.trust__item span,
+.footer__pay-label { overflow-wrap: break-word; }
+
+.trust__grid { align-items: start; }
+
+.trust__item i { width: 1.5rem; text-align: center; }
