@@ -6,29 +6,42 @@ $base = $argv[1] ?? 'http://localhost/Jayann_Store';
 
 $MIN_VIEWPORT = 320;
 
+require __DIR__ . '/css_manifest.php';
+
+$rootDir = dirname(__DIR__);
+
+$relUrls = static function (array $files) use ($rootDir, $base): array {
+    $urls = [];
+    foreach ($files as $file) {
+        $rel = str_replace('\\', '/', substr($file, strlen($rootDir) + 1));
+        $urls[] = $base . '/' . $rel;
+    }
+    return $urls;
+};
+
 $sheets = [
-    'storefront' => $base . '/assets/css/style.css',
-    'admin'      => $base . '/assets/css/admin_style.css',
+    'storefront' => $relUrls(css_manifest_files('storefront', $rootDir)),
+    'admin'      => $relUrls(css_manifest_files('admin', $rootDir)),
 ];
 
 $pages = [
-    'home.php'                 => 'storefront',
-    'products.php'             => 'storefront',
-    'discounted_products.php'  => 'storefront',
-    'category.php?category=Beverages' => 'storefront',
-    'search.php?q=soap'        => 'storefront',
-    'quick_view.php?pid=8'     => 'storefront',
-    'cart.php'                 => 'storefront',
-    'checkout.php'             => 'storefront',
-    'orders.php'               => 'storefront',
-    'login.php'                => 'storefront',
-    'register.php'             => 'storefront',
-    'profile.php'              => 'storefront',
-    'update_profile.php'       => 'storefront',
-    'update_address.php'       => 'storefront',
-    'about.php'                => 'storefront',
-    'contact.php'              => 'storefront',
-    'admin/admin_login.php'    => 'admin',
+    'public/home.php'                 => 'storefront',
+    'public/products.php'             => 'storefront',
+    'public/discounted_products.php'  => 'storefront',
+    'public/category.php?category=Beverages' => 'storefront',
+    'public/search.php?q=soap'        => 'storefront',
+    'public/quick_view.php?pid=8'     => 'storefront',
+    'public/cart.php'                 => 'storefront',
+    'public/checkout.php'             => 'storefront',
+    'public/orders.php'               => 'storefront',
+    'public/login.php'                => 'storefront',
+    'public/register.php'             => 'storefront',
+    'public/profile.php'              => 'storefront',
+    'public/update_profile.php'       => 'storefront',
+    'public/update_address.php'       => 'storefront',
+    'public/about.php'                => 'storefront',
+    'public/contact.php'              => 'storefront',
+    'admin/pages/admin_login.php'     => 'admin',
 ];
 
 function strip_comments(string $css): string
@@ -151,14 +164,18 @@ function inside_scroller(string $selector, array $sheet): bool
 }
 
 $rules = [];
-foreach ($sheets as $name => $url) {
-    $css = @file_get_contents($url);
-    if ($css === false) {
-        fwrite(STDERR, "Could not read $url\n");
-        exit(2);
+foreach ($sheets as $name => $urls) {
+    $css = '';
+    foreach ($urls as $url) {
+        $part = @file_get_contents($url);
+        if ($part === false) {
+            fwrite(STDERR, "Could not read $url\n");
+            exit(2);
+        }
+        $css .= $part;
     }
     $rules[$name] = parse_css($css);
-    printf("  parsed %-10s %6d bytes -> %d selectors\n", $name . ':', strlen($css), count($rules[$name]));
+    printf("  parsed %-10s %2d files %6d bytes -> %d selectors\n", $name . ':', count($urls), strlen($css), count($rules[$name]));
 }
 
 $mediaTouched = [];
