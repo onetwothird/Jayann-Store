@@ -1,0 +1,20 @@
+.card {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: var(--r-lg);
+box-shadow: var(--sh-xs);
+margin-bottom: var(--sp-5);
+}
+
+.card__head {
+display: flex; align-items: center; justify-content: space-between;
+gap: var(--sp-3); flex-wrap: wrap;
+padding: var(--sp-4) var(--sp-5);
+border-bottom: 1px solid var(--border);
+}
+
+.card__title { font-size: var(--fs-lg); font-weight: 700; }
+
+.card__body  { padding: var(--sp-5); }
+
+.card__body--flush { padding: 0; }
