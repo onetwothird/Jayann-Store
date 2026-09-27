@@ -128,7 +128,7 @@ require __DIR__ . '/../../app/views/admin/head.php';
                 '<a class="btn btn--ghost btn--sm" href="placed_orders.php">Clear filters</a>'
             ) ?>
         <?php else: ?>
-        <div class="tablewrap">
+        <div class="tablewrap orders-table">
             <table class="table">
                 <thead>
                     <tr>
@@ -149,34 +149,34 @@ require __DIR__ . '/../../app/views/admin/head.php';
                     $items = $lines ? e(format_order_items((string) $o['total_products'])) : '—';
                     ?>
                     <tr>
-                        <td>
+                        <td data-label="Reference">
                             <a href="order_view.php?id=<?= (int) $o['id'] ?>" style="font-weight:600">
                                 <?= e($o['order_ref'] ?: ('#' . $o['id'])) ?>
                             </a>
                             <small style="display:block;color:var(--text-muted)"><?= e(nice_date((string) $o['order_date'])) ?></small>
                         </td>
-                        <td>
+                        <td data-label="Customer">
                             <strong><?= e($o['name']) ?></strong>
                             <small style="display:block;color:var(--text-muted)"><?= e($o['email']) ?></small>
                             <small style="display:block;color:var(--text-soft)"><?= e($o['number']) ?></small>
                         </td>
-                        <td style="max-width:18rem">
+                        <td data-label="Items" style="max-width:18rem">
                             <span style="display:block;color:var(--text-muted);font-size:var(--fs-sm)"><?= $items ?></span>
                         </td>
-                        <td>
+                        <td data-label="Payment">
                             <span class="tag">
                                 <i class="fa-solid <?= e(payment_method_icon((string) $o['method'])) ?>" aria-hidden="true"></i>
                                 <?= e(payment_method_label((string) $o['method'])) ?>
                             </span>
                         </td>
-                        <td class="num">
+                        <td class="num" data-label="Total">
                             <strong><?= e(money($o['total_price'])) ?></strong>
                             <?php if ((float) $o['shipping_fee'] > 0): ?>
                                 <small style="display:block;color:var(--text-muted)">incl. <?= e(money($o['shipping_fee'])) ?> delivery</small>
                             <?php endif; ?>
                         </td>
-                        <td><span class="status status--<?= e($meta['class']) ?>"><?= e($meta['label']) ?></span></td>
-                        <td class="num">
+                        <td data-label="Status"><span class="status status--<?= e($meta['class']) ?>"><?= e($meta['label']) ?></span></td>
+                        <td class="num" data-label="Actions">
                             <div class="rowactions" style="justify-content:flex-end">
                                 <form method="post" action="placed_orders.php" class="no-print">
                                     <input type="hidden" name="form_action" value="status">
