@@ -322,7 +322,7 @@ require __DIR__ . '/../../app/views/admin/head.php';
                     : '<a class="btn btn--sm" href="#add-product">Add a product</a>'
             ) ?>
         <?php else: ?>
-        <div class="tablewrap">
+        <div class="tablewrap products-table">
             <table class="table">
                 <thead>
                     <tr>
@@ -343,7 +343,7 @@ require __DIR__ . '/../../app/views/admin/head.php';
                     $stock  = (int) $p['stock'];
                     ?>
                     <tr<?= $highlight === (int) $p['id'] ? ' style="background:var(--brand-50)"' : '' ?>>
-                        <td>
+                        <td data-label="Product">
                             <span class="cellproduct">
                                 <img src="<?= e(product_image($p['image'])) ?>" alt="" loading="lazy">
                                 <span>
@@ -352,15 +352,15 @@ require __DIR__ . '/../../app/views/admin/head.php';
                                 </span>
                             </span>
                         </td>
-                        <td><span class="tag"><?= e($p['category']) ?></span></td>
-                        <td class="num">
+                        <td data-label="Category"><span class="tag"><?= e($p['category']) ?></span></td>
+                        <td class="num" data-label="Price">
                             <strong><?= e(money($price)) ?></strong>
                             <?php if ($sale): ?>
                                 <br><small style="color:var(--text-muted);text-decoration:line-through"><?= e(money($p['price'])) ?></small>
                             <?php endif; ?>
                         </td>
-                        <td class="num"><?= e(number_format($stock)) ?></td>
-                        <td>
+                        <td class="num" data-label="Stock"><?= e(number_format($stock)) ?></td>
+                        <td data-label="Status">
                             <?php if ($stock === 0): ?>
                                 <span class="tag tag--danger">Out of stock</span>
                             <?php elseif ($stock <= 5): ?>
@@ -372,7 +372,7 @@ require __DIR__ . '/../../app/views/admin/head.php';
                                 <span class="tag tag--sale">-<?= (int) $pct ?>%</span>
                             <?php endif; ?>
                         </td>
-                        <td class="num">
+                        <td class="num" data-label="Actions">
                             <div class="rowactions" style="justify-content:flex-end">
                                 <a class="btn btn--sm btn--ghost" href="update_product.php?id=<?= (int) $p['id'] ?>">
                                     <i class="fa-solid fa-pen" aria-hidden="true"></i> Edit
@@ -381,14 +381,14 @@ require __DIR__ . '/../../app/views/admin/head.php';
                                    href="../quick_view.php?pid=<?= (int) $p['id'] ?>" title="Preview on the storefront">
                                     <i class="fa-solid fa-eye" aria-hidden="true"></i>
                                 </a>
-                                <form method="post" action="products.php" data-confirm="Move &quot;<?= e($p['name']) ?>&quot; to the archive? It will be removed from the storefront.">
+                                <form method="post" action="products.php" data-confirm="Move "<?= e($p['name']) ?>" to the archive? It will be removed from the storefront.">
                                     <input type="hidden" name="form_action" value="archive">
                                     <input type="hidden" name="id" value="<?= (int) $p['id'] ?>">
                                     <button class="btn btn--sm btn--ghost" type="submit" title="Archive">
                                         <i class="fa-solid fa-box-archive" aria-hidden="true"></i>
                                     </button>
                                 </form>
-                                <form method="post" action="products.php" data-confirm="Delete &quot;<?= e($p['name']) ?>&quot; permanently? This cannot be undone.">
+                                <form method="post" action="products.php" data-confirm="Delete "<?= e($p['name']) ?>" permanently? This cannot be undone.">
                                     <input type="hidden" name="form_action" value="delete">
                                     <input type="hidden" name="id" value="<?= (int) $p['id'] ?>">
                                     <button class="btn btn--sm btn--danger" type="submit" title="Delete">
