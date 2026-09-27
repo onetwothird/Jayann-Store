@@ -1,0 +1,43 @@
+{
+    "storefront": [
+        "base/tokens.css",
+        "base/layout.css",
+        "base/controls.css",
+        "base/feedback.css",
+        "layout/header.css",
+        "layout/navigation.css",
+        "components/cards.css",
+        "pages/home.css",
+        "components/modal.css",
+        "pages/cart.css",
+        "pages/checkout.css",
+        "pages/orders.css",
+        "pages/auth.css",
+        "pages/account.css",
+        "pages/contact.css",
+        "pages/products.css",
+        "components/data.css",
+        "pages/about.css",
+        "layout/footer.css",
+        "responsive.css"
+    ],
+    "admin": [
+        "admin/base/tokens.css",
+        "admin/base/layout.css",
+        "admin/layout/sidebar.css",
+        "admin/layout/topbar.css",
+        "admin/components/feedback.css",
+        "admin/components/pagehead.css",
+        "admin/components/statgrid.css",
+        "admin/components/card.css",
+        "admin/base/controls.css",
+        "admin/components/tag.css",
+        "admin/components/notice.css",
+        "admin/components/table.css",
+        "admin/components/data.css",
+        "admin/components/status.css",
+        "admin/pages/auth.css",
+        "admin/pages/inventory.css",
+        "admin/responsive.css"
+    ]
+}
