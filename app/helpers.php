@@ -43,6 +43,43 @@ function json_attr($value): string
     return e(json_encode($value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 }
 
+function css_manifest(): array
+{
+    static $cache = null;
+    if ($cache !== null) {
+        return $cache;
+    }
+    $path = dirname(__DIR__) . '/assets/css/manifest.json';
+    $raw  = is_file($path) ? json_decode((string) file_get_contents($path), true) : null;
+    if (!is_array($raw)) {
+        $raw = ['storefront' => ['responsive.css'], 'admin' => ['admin/responsive.css']];
+    }
+    $cache = $raw;
+    return $cache;
+}
+
+function css_files(string $bundle): array
+{
+    $manifest = css_manifest();
+    $files    = $manifest[$bundle] ?? [];
+    $out      = [];
+    foreach ($files as $file) {
+        if (is_string($file) && $file !== '') {
+            $out[] = BASE_URL . 'assets/css/' . $file;
+        }
+    }
+    return $out;
+}
+
+function render_css(string $bundle, string $version = '2.0'): string
+{
+    $html = '';
+    foreach (css_files($bundle) as $file) {
+        $html .= '<link rel="stylesheet" href="' . e($file . '?v=' . $version) . '">' . "\n";
+    }
+    return $html;
+}
+
 function redirect(string $url): never
 {
     if (!headers_sent()) {
@@ -242,8 +279,9 @@ function discount_percent(array $product): int
     return (int) round((($price - effective_price($product)) / $price) * 100);
 }
 
-function product_image(?string $image, string $prefix = ''): string
+function product_image(?string $image, ?string $prefix = null): string
 {
+    $prefix ??= BASE_URL;
     $image = trim((string) $image);
     if ($image === '' || str_contains($image, "\0")) {
         return $prefix . 'assets/img/placeholder.svg';
@@ -348,6 +386,34 @@ function product_categories(): array
 {
     global $db;
     return $db->all('SELECT DISTINCT category FROM products ORDER BY category');
+}
+
+function category_meta(?string $category = null): array
+{
+    static $map = [
+        'Beverages'     => ['icon' => 'fa-martini-glass', 'tone' => 'drinks', 'blurb' => 'Drinks & refreshers'],
+        'Essentials'    => ['icon' => 'fa-basket-shopping', 'tone' => 'staples', 'blurb' => 'Everyday staples'],
+        'Personal Care' => ['icon' => 'fa-soap', 'tone' => 'care', 'blurb' => 'Hygiene & beauty'],
+        'Snacks'        => ['icon' => 'fa-cookie-bite', 'tone' => 'snacks', 'blurb' => 'Chips & treats'],
+    ];
+
+    if ($category === null) {
+        return $map;
+    }
+
+    return $map[$category]
+        ?? ['icon' => 'fa-bag-shopping', 'tone' => 'default', 'blurb' => 'Browse range'];
+}
+
+function category_icon(?string $category = null): string
+{
+    $meta = category_meta($category);
+    return 'fa-solid ' . $meta['icon'] . ' cats__icon--' . $meta['tone'];
+}
+
+function category_blurb(?string $category = null): string
+{
+    return category_meta($category)['blurb'];
 }
 
 function payment_method_label(string $method): string
