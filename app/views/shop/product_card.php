@@ -44,7 +44,7 @@ if (!function_exists('product_card')) {
         $seq++;
         $uid = 'pc-' . $id . '-' . $seq;
 
-        $image = product_image($product['image'] ?? '', $base);
+        $image = product_image($product['image'] ?? '');
         $saving = $onSale ? $listPrice - $unit : 0.0;
         ?>
         <article class="pcard<?= $inStock ? '' : ' is-out' ?>" data-product-id="<?= $id ?>">
