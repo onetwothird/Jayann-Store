@@ -28,7 +28,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     if ($action === 'restock') {
         $qty = (int) ($_POST['qty'] ?? 0);
         if ($qty <= 0) {
-            $errors[] = 'Enter how many units arrived â€” it has to be more than zero.';
+            $errors[] = 'Enter how many units arrived — it has to be more than zero.';
         } else {
             $result = adjust_stock($id, $qty, 'purchase', [
                 'note'      => trim((string) ($_POST['note'] ?? '')) ?: 'Stock received',
@@ -45,7 +45,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         $qty = (int) ($_POST['qty'] ?? 0);
         $reason = (string) ($_POST['reason'] ?? 'damage');
         if ($qty <= 0) {
-            $errors[] = 'Enter how many units are leaving â€” it has to be more than zero.';
+            $errors[] = 'Enter how many units are leaving — it has to be more than zero.';
         } elseif (!in_array($reason, ['damage', 'correction', 'return', 'sale'], true)) {
             $errors[] = 'Choose a valid reason.';
         } else {
@@ -250,7 +250,7 @@ require __DIR__ . '/../../app/views/admin/head.php';
                         <div class="field">
                             <label class="field__label" for="add-ref">Reference <span class="field__opt">(optional)</span></label>
                             <input class="input" id="add-ref" type="text" name="reference" maxlength="60"
-                                   placeholder="PO number, invoiceâ€¦">
+                                   placeholder="PO number, invoice…">
                         </div>
                         <div class="field field--full">
                             <label class="field__label" for="add-note">Note <span class="field__opt">(optional)</span></label>
