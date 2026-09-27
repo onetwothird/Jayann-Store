@@ -12,7 +12,7 @@ $category = $filters['category'];
 $pageTitle = $category !== '' ? $category : 'Shop by category';
 $pageDesc  = $category !== ''
     ? 'Browse ' . $category . ' at Jayann\'s Store.'
-    : 'Every aisle at Jayann\'s Store Ã¢â‚¬â€ beverages, snacks, essentials and personal care.';
+    : 'Every aisle at Jayann\'s Store — beverages, snacks, essentials and personal care.';
 $pageClass = 'page-category';
 
 require '../app/views/layout/head.php';
@@ -49,10 +49,10 @@ require '../app/views/layout/head.php';
                     $counts[$r['category']] = (int) $r['n'];
                 }
                 $catImages = [
-                    'Beverages'     => 'assets/img/drinks.png',
-                    'Snacks'        => 'assets/img/snack.png',
-                    'Essentials'    => 'assets/img/must-have.png',
-                    'Personal Care' => 'assets/img/personal-care.png',
+                    'Beverages'     => BASE_URL . 'assets/img/drinks.png',
+                    'Snacks'        => BASE_URL . 'assets/img/snack.png',
+                    'Essentials'    => BASE_URL . 'assets/img/must-have.png',
+                    'Personal Care' => BASE_URL . 'assets/img/personal-care.png',
                 ];
                 $catBlurbs = [
                     'Beverages'     => 'Drinks &amp; refreshers',
@@ -64,7 +64,7 @@ require '../app/views/layout/head.php';
                     $cat = $row['category'];
                 ?>
                     <a class="cats__tile" href="category.php?category=<?= urlencode($cat) ?>">
-                        <img src="<?= e($catImages[$cat] ?? 'assets/img/storenijayann.png') ?>" alt="" loading="lazy" decoding="async">
+                        <img src="<?= e($catImages[$cat] ?? BASE_URL . 'assets/img/storenijayann.png') ?>" alt="" loading="lazy" decoding="async">
                         <strong><?= e($cat) ?></strong>
                         <span><?= $catBlurbs[$cat] ?? 'Browse range' ?> &middot; <?= $counts[$cat] ?? 0 ?> items</span>
                     </a>
