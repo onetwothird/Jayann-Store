@@ -1,0 +1,21 @@
+.page-head {
+display: flex; align-items: flex-end; justify-content: space-between;
+gap: var(--sp-4); flex-wrap: wrap;
+margin-bottom: var(--sp-6);
+}
+
+.page-head h1 { font-size: var(--fs-3xl); letter-spacing: -.03em; }
+
+.page-head p  { color: var(--text-muted); margin-top: var(--sp-1); }
+
+.page-head__actions { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+
+.eyebrow {
+display: inline-flex; align-items: center; gap: var(--sp-2);
+padding: var(--sp-1) var(--sp-3);
+border-radius: var(--r-full);
+background: var(--brand-50); color: var(--brand-600);
+font-size: var(--fs-xs); font-weight: 700;
+letter-spacing: .08em; text-transform: uppercase;
+margin-bottom: var(--sp-2);
+}
