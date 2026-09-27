@@ -26,9 +26,9 @@ $ref   = (string) ($order['order_ref'] ?: ('#' . $order['id']));
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <title><?= e($ref) ?> &middot; order sheet</title>
-<link rel="icon" type="image/png" href="../assets/img/storenijayann.png">
+<link rel="icon" type="image/png" href="<?= BASE_URL ?>assets/img/storenijayann.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<link rel="stylesheet" href="../assets/css/admin_style.css?v=2.0">
+<?= render_css('admin') ?>
 <style>
   .sheet { max-width: 44rem; margin: 0 auto; padding: var(--sp-6); background:
   .sheet__head { display: flex; gap: var(--sp-4); align-items: center; border-bottom: 2px solid var(--brand-500); padding-bottom: var(--sp-4); margin-bottom: var(--sp-5); }
@@ -62,7 +62,7 @@ $ref   = (string) ($order['order_ref'] ?: ('#' . $order['id']));
     </div>
 
     <header class="sheet__head">
-        <img src="../<?= e(product_image(null)) ?>" alt="">
+        <img src="<?= e(product_image(null)) ?>" alt="">
         <div>
             <h1><?= e($config['store']['legal']) ?></h1>
             <p style="color:var(--text-muted);font-size:var(--fs-sm)">
@@ -110,9 +110,9 @@ $ref   = (string) ($order['order_ref'] ?: ('#' . $order['id']));
             <tr>
                 <td><?= $i + 1 ?></td>
                 <td><strong><?= e($line['name']) ?></strong></td>
-                <td class="num"><?= $line['unit'] !== null ? e(money($line['unit'])) : 'â€”' ?></td>
+                <td class="num"><?= $line['unit'] !== null ? e(money($line['unit'])) : '—' ?></td>
                 <td class="num"><?= (int) $line['quantity'] ?></td>
-                <td class="num"><?= $line['unit'] !== null ? e(money($line['unit'] * $line['quantity'])) : 'â€”' ?></td>
+                <td class="num"><?= $line['unit'] !== null ? e(money($line['unit'] * $line['quantity'])) : '—' ?></td>
             </tr>
         <?php endforeach; ?>
         </tbody>
