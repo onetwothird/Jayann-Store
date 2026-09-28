@@ -26,11 +26,17 @@ AddDefaultCharset UTF-8
     Require all denied
 </FilesMatch>
 
-RedirectMatch 404 ^/Jayann_Store/(app|database|tools)(/|$)
+# Same idea, for whole directories. These rules used to be written as
+# ^/Jayann_Store/(app|database|tools)(/|$) , which silently stopped matching
+# the day the app was deployed into the docroot instead of a subfolder — the
+# path segment is never in the URL now, so nothing was actually blocked.
+# ^ matches the path from the document root, so no folder name is hardcoded
+# and this keeps working if the project moves again.
+RedirectMatch 404 ^/(app|admin/tools|tools|database)(/|$)
 
 # Never execute PHP that arrives as an upload. (The matching rules live in
 # uploads/.htaccess - <Directory> blocks are not permitted inside .htaccess.)
-RedirectMatch 404 ^/Jayann_Store/uploads/.*\.(php|php3|php4|php5|php7|php8|phtml|phar|cgi|pl)$
+RedirectMatch 404 ^/uploads/.*\.(php|php3|php4|php5|php7|php8|phtml|phar|cgi|pl)$
 
 # ------------------------------------------------------------------- caching
 <IfModule mod_expires.c>
