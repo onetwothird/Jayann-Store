@@ -166,7 +166,8 @@ require '../app/views/layout/head.php';
                                 <a class="btn btn--sm" href="download_receipt.php?order=<?= (int) $order['id'] ?>">
                                     <i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i> Download PDF
                                 </a>
-                            </div>
+                                <br>
+                            </div>                  
                         </footer>
                     </article>
                 <?php endforeach; ?>
