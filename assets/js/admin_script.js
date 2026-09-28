@@ -136,6 +136,31 @@
     });
   }
 
+  // Same placeholder fallback as assets/js/script.js. Admin pages load only
+  // this file, so it needs its own copy — a product photo that 404s should show
+  // the placeholder here too instead of a broken-image icon.
+  //
+  // The site root is derived from the failed src rather than hardcoded, because
+  // these pages live under /admin/pages/ and a relative path would resolve to
+  // the wrong directory. 'error' does not bubble, hence the capture phase.
+  function initImageFallback() {
+    const marker = '/uploads/products/';
+    const placeholder = 'assets/img/placeholder.svg';
+
+    document.addEventListener('error', (ev) => {
+      const el = ev.target;
+
+      if (!el || el.tagName !== 'IMG' || el.dataset.fallbackApplied) return;
+
+      const src = el.getAttribute('src') || '';
+      const at = src.indexOf(marker);
+      if (at === -1) return;
+
+      el.dataset.fallbackApplied = '1';
+      el.src = src.slice(0, at) + placeholder;
+    }, true);
+  }
+
   function initFilters() {
 
     $$('[data-search]').forEach((input) => {
@@ -244,6 +269,7 @@
     initForms();
     initFilters();
     initSparkline();
+    initImageFallback();
   }
 
   if (document.readyState === 'loading') {
