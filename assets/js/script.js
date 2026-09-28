@@ -402,8 +402,37 @@
     });
   }
 
+  function initImageFallback() {
+    // product_image() in app/helpers.php now points straight at uploads/products/
+    // without checking the disk, so a photo that is genuinely absent 404s
+    // instead of silently becoming the placeholder. Swap it in here.
+    //
+    // 'error' does not bubble, so the listener has to run in the capture phase.
+    // Only uploads/products/ URLs are touched, which leaves the logo, the
+    // payment marks and the rest of the site art alone.
+    var marker = '/uploads/products/';
+    var placeholder = 'assets/img/placeholder.svg';
+
+    document.addEventListener('error', function (ev) {
+      var el = ev.target;
+
+      if (!el || el.tagName !== 'IMG' || el.dataset.fallbackApplied) return;
+
+      var src = el.getAttribute('src') || '';
+      var at = src.indexOf(marker);
+      if (at === -1) return;
+
+      // Everything before the marker is the site root, e.g.
+      // "https://host/" — so the placeholder resolves correctly from the
+      // storefront and from /admin/pages/ alike, unlike a relative path.
+      el.dataset.fallbackApplied = '1';
+      el.src = src.slice(0, at) + placeholder;
+    }, true);
+  }
+
   function init() {
     initStickyHeader();
+    initImageFallback();
     initDrawer();
     initDropdowns();
     initToasts();
