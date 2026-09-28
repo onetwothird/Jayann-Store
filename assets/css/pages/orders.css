@@ -66,7 +66,7 @@ font-size: var(--fs-xs); font-weight: 700;
 
 .receipt__title { font-size: var(--fs-2xl); letter-spacing: -.02em; }
 
-.receipt__sub { color: var(--text-muted); font-size: var(--fs-sm); margin-top: var(--sp-1); }
+.receipt__sub { color: var(--text-muted); font-size: var(--fs-sm); margin-top: var(--sp-2); }
 
 .receipt__grid {
 display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
