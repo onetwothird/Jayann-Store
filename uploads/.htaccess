@@ -4,7 +4,11 @@
 # served as plain text, never run.
 # =============================================================================
 
-Options -Indexes -ExecCGI
+# Only -Indexes is set. -ExecCGI was removed on purpose: shared hosts such as
+# InfinityFree often permit `AllowOverride Options=Indexes` but not ExecCGI, and
+# an unsupported directive makes Apache return 500 for every request in this
+# directory. That 500 was indistinguishable from a missing image.
+Options -Indexes
 
 <IfModule mod_php.c>
     php_flag engine off
