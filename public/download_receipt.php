@@ -24,145 +24,95 @@ if (!$order) {
 }
 
 require_once __DIR__ . '/../libs/fpdf.php';
+require_once __DIR__ . '/../app/receipt_pdf.php';
 
-$store  = $config['store'];
-$lines  = order_lines($order);
-$ref    = (string) ($order['order_ref'] ?: ('JYS-' . str_pad((string) $order['id'], 6, '0', STR_PAD_LEFT)));
-$subtotal = (float) ($order['subtotal'] ?: 0);
-$shipping = (float) ($order['shipping_fee'] ?? 0);
-if ($subtotal <= 0 && (float) $order['total_price'] > 0) {
+$store = $config['store'];
+$lines = order_lines($order);
+$ref   = (string) ($order['order_ref'] ?: ('JYS-' . str_pad((string) $order['id'], 6, '0', STR_PAD_LEFT)));
 
-    $shipping = (float) $order['total_price'];
-    $subtotal = $shipping;
-}
+// Older orders stored the goods as plain text rather than JSON, and some rows
+// have no stored breakdown at all. Prefer the sum of the actual lines, because
+// the previous fallback copied the grand total into both Subtotal and Delivery,
+// printing a receipt whose own rows did not add up to its own total.
+$total = (float) ($order['total_price'] ?? 0);
 
-$currency = $store['currency'];
-$peso     = static fn($n) => $currency . number_format((float) $n, 2);
-
-$pdf = new FPDF();
-$pdf->SetTitle('Receipt ' . $ref);
-$pdf->SetAuthor($store['legal']);
-$pdf->AddPage();
-
-$pdf->SetFont('Helvetica', 'B', 20);
-$pdf->Cell(0, 10, $store['legal'], 0, 1, 'C');
-$pdf->SetFont('Helvetica', '', 10);
-$pdf->Cell(0, 6, $store['address'], 0, 1, 'C');
-$pdf->Cell(0, 6, $store['phone'] . '  |  ' . $store['email'], 0, 1, 'C');
-$pdf->Ln(6);
-
-$pdf->SetDrawColor(238, 77, 45);
-$pdf->SetLineWidth(0.6);
-$pdf->Line(10, $pdf->GetY(), 200, $pdf->GetY());
-$pdf->Ln(8);
-
-$pdf->SetFont('Helvetica', 'B', 16);
-$pdf->Cell(0, 10, 'ORDER RECEIPT', 0, 1, 'C');
-$pdf->SetFont('Helvetica', '', 11);
-$pdf->Cell(0, 6, 'Reference: ' . $ref, 0, 1, 'C');
-$pdf->Ln(8);
-
-$pdf->SetDrawColor(220, 223, 228);
-$pdf->SetLineWidth(0.3);
-
-$pdf->SetFont('Helvetica', 'B', 12);
-$pdf->Cell(0, 8, 'CUSTOMER DETAILS', 0, 1, 'L');
-$pdf->SetFont('Helvetica', '', 11);
-
-$leftX  = 10;
-$rightX = 105;
-$y      = $pdf->GetY();
-
-$pdf->SetXY($leftX, $y);
-$pdf->Cell(90, 6, 'Name:  ' . $order['name'], 0, 1);
-$pdf->Cell(90, 6, 'Phone:  ' . $order['number'], 0, 1);
-$pdf->Cell(90, 6, 'Email:  ' . $order['email'], 0, 1);
-$pdf->Cell(90, 6, 'Placed:  ' . nice_date((string) $order['order_date'], true), 0, 1);
-
-$pdf->SetXY($rightX, $y);
-$pdf->Cell(90, 6, 'Payment:  ' . payment_method_label((string) $order['method']), 0, 1);
-$pdf->Cell(90, 6, 'Status:  ' . order_status_meta((string) $order['payment_status'])['label'], 0, 1);
-if (!empty($order['payment_reference'])) {
-    $pdf->Cell(90, 6, 'Gateway ref:  ' . $order['payment_reference'], 0, 1);
-}
-
-$pdf->SetXY($leftX, $pdf->GetY());
-$pdf->SetFont('Helvetica', 'B', 11);
-$pdf->Cell(90, 6, 'Delivery address:', 0, 1);
-$pdf->SetFont('Helvetica', '', 11);
-$pdf->MultiCell(0, 6, (string) $order['address'], 0, 'L');
-
-$pdf->Ln(4);
-$pdf->Line(10, $pdf->GetY(), 200, $pdf->GetY());
-$pdf->Ln(8);
-
-$columnX = [10, 34, 128, 152, 200];
-
-$pdf->SetFont('Helvetica', 'B', 10);
-$pdf->SetFillColor(247, 248, 250);
-$pdf->Rect(10, $pdf->GetY(), 190, 8, 'F');
-$pdf->SetXY($columnX[0], $pdf->GetY());
-$pdf->Cell(0, 8, 'ITEM', 0, 1, 'L');
-$pdf->SetXY($columnX[1], $pdf->GetY() - 8);
-$pdf->Cell(90, 8, 'QTY', 0, 0, 'C');
-$pdf->SetXY($columnX[2], $pdf->GetY());
-$pdf->Cell(22, 8, 'PRICE', 0, 0, 'R');
-$pdf->SetXY($columnX[3], $pdf->GetY());
-$pdf->Cell(46, 8, 'AMOUNT', 0, 1, 'R');
-$pdf->Ln(2);
-
-$pdf->SetFont('Helvetica', '', 10);
+$lineSum = 0.0;
 foreach ($lines as $line) {
-    $unit   = $line['unit'] ?? 0.0;
-    $amount = $unit * (int) $line['quantity'];
-    $rowY   = $pdf->GetY();
-
-    $name = (string) $line['name'];
-    $pdf->SetXY($columnX[0], $rowY);
-    $pdf->MultiCell(90, 6, $name, 0, 'L');
-    $rowH = max(6, $pdf->GetY() - $rowY);
-
-    $pdf->SetXY($columnX[1], $rowY);
-    $pdf->Cell(90, $rowH, (string) $line['quantity'], 0, 0, 'C');
-    $pdf->SetXY($columnX[2], $rowY);
-    $pdf->Cell(22, 6, $unit > 0 ? $peso($unit) : '-', 0, 0, 'R');
-    $pdf->SetXY($columnX[3], $rowY);
-    $pdf->Cell(46, 6, $unit > 0 ? $peso($amount) : '-', 0, 0, 'R');
-    $pdf->SetY($rowY + $rowH);
-    $pdf->Ln(2);
-
-    $pdf->SetDrawColor(238, 240, 243);
-    $pdf->Line(10, $pdf->GetY(), 200, $pdf->GetY());
+    $lineSum += (float) ($line['unit'] ?? 0) * (int) ($line['quantity'] ?? 0);
 }
 
-$pdf->Ln(6);
+if ($lineSum > 0) {
+    $subtotal = $lineSum;
+    // Whatever is left of the paid total is the delivery charge.
+    $shipping = $total - $subtotal;
+} else {
+    $subtotal = (float) ($order['subtotal'] ?: 0);
+    $shipping = (float) ($order['shipping_fee'] ?? 0);
+}
 
-$pdf->SetFont('Helvetica', '', 11);
-$totalX = 120;
+// A receipt whose own rows do not add up to its own total is worse than one
+// that quietly rounds: the customer would be billed a figure the document does
+// not show. If the stored figures disagree, trust the amount actually charged.
+if ($subtotal <= 0 && $total > 0) {
+    $subtotal = $total;
+    $shipping = 0.0;
+} elseif ($shipping < 0) {
+    // Lines add up to more than was charged (a discount applied after the
+    // fact, or stale prices). Show the charged total as the goods total.
+    $subtotal = $total;
+    $shipping = 0.0;
+}
 
-$pdf->SetX($totalX);
-$pdf->Cell(45, 7, 'Subtotal', 0, 0, 'L');
-$pdf->Cell(35, 7, $peso($subtotal), 0, 1, 'R');
-$pdf->SetX($totalX);
-$pdf->Cell(45, 7, 'Delivery', 0, 0, 'L');
-$pdf->Cell(35, 7, $shipping > 0 ? $peso($shipping) : 'Free', 0, 1, 'R');
+$amount = static fn(float $n): string => money($n);
 
-$pdf->SetX($totalX);
-$pdf->SetFont('Helvetica', 'B', 13);
-$pdf->SetDrawColor(238, 77, 45);
-$pdf->Line($totalX, $pdf->GetY() + 1, 200, $pdf->GetY() + 1);
-$pdf->Ln(2);
-$pdf->SetX($totalX);
-$pdf->Cell(45, 9, 'TOTAL', 0, 0, 'L');
-$pdf->Cell(35, 9, $peso($order['total_price']), 0, 1, 'R');
+$statusMeta = order_status_meta((string) $order['payment_status']);
+$statusTone = match ($statusMeta['class']) {
+    'paid', 'completed' => 'good',
+    'failed'            => 'bad',
+    'cancelled'         => 'warn',
+    default             => 'info',
+};
 
-$pdf->Ln(10);
+$view = [
+    'date_label'     => nice_date((string) $order['order_date'], true),
+    'status_label'   => (string) $statusMeta['label'],
+    'status_tone'    => $statusTone,
+    'customer_name'  => (string) $order['name'],
+    'customer_phone' => (string) $order['number'],
+    'customer_email' => (string) $order['email'],
+    'method_label'   => payment_method_label((string) $order['method']),
+    'gateway_ref'    => (string) ($order['payment_reference'] ?? ''),
+    'address'        => (string) $order['address'],
+];
 
-$pdf->SetFont('Helvetica', 'I', 11);
-$pdf->Cell(0, 8, 'Thank you for your purchase!', 0, 1, 'C');
-$pdf->SetFont('Helvetica', '', 9);
-$pdf->Cell(0, 6, $store['name'] . '  -  ' . $store['address'], 0, 1, 'C');
-$pdf->Cell(0, 6, 'Questions? ' . $store['phone'] . '  |  Generated ' . date('d M Y, g:i A'), 0, 1, 'C');
+$totals = [
+    'subtotal' => $amount($subtotal),
+    'shipping' => $shipping > 0 ? $amount($shipping) : 'Free',
+    'total'    => $amount($total),
+];
 
-$pdf->Output('D', 'receipt_' . preg_replace('/[^A-Za-z0-9_-]/', '', $ref) . '.pdf');
+// Paper size and orientation are part of the URL, so a receipt can be printed
+// on whatever the customer actually has. Anything unrecognised falls back to
+// A4 portrait rather than erroring.
+$format = strtolower((string) ($_GET['format'] ?? 'a4'));
+$allowedFormats = ['a3', 'a4', 'a5', 'letter', 'legal'];
+if (!in_array($format, $allowedFormats, true)) {
+    $format = 'a4';
+}
 
+$orientation = strtoupper((string) ($_GET['orientation'] ?? 'P')) === 'L' ? 'L' : 'P';
+
+$receipt = new ReceiptPdf($store, [
+    'format'      => $format,
+    'orientation' => $orientation,
+    // A filesystem path, not BASE_URL: FPDF embeds the logo by reading it from
+    // disk, so a URL here would silently resolve to nothing.
+    'logo'        => ROOT_PATH,
+]);
+
+// 'D' is a file download; 'I' renders in the browser. Both are a one-click
+// print from there, which is what most people actually want from a receipt.
+$inline = strtolower((string) ($_GET['view'] ?? '')) === 'inline';
+$receipt->setDisposition($inline ? 'I' : 'D');
+
+$receipt->render($view, $lines, $totals, $ref);
