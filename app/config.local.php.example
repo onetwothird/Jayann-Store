@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * Per-machine configuration overrides — TEMPLATE.
+ *
+ * Copy this to config.local.php and edit. app/config.php loads
+ * config.local.php automatically and merges it over the defaults, so you only
+ * list the keys that differ on this machine.
+ *
+ *   Laragon       leave it absent, or point it at your local MySQL.
+ *   InfinityFree  create it on the server through the file manager with the
+ *                 hosting credentials, then never commit it.
+ *
+ * config.local.php is in .gitignore, so it will not be pushed by accident, and
+ * the RedirectMatch rule for /app/ in the root .htaccess returns 404 for it
+ * over HTTP, so the password is not readable from a browser.
+ *
+ * Only include the keys you actually need to change. Anything you leave out
+ * keeps the value in app/config.php.
+ */
+
+declare(strict_types=1);
+
+return [
+    'db' => [
+        // InfinityFree:
+        // 'host'     => 'sqlXXX.infinityfree.com',
+        // 'name'     => 'ifX_XXXXXXX_jayann_store',
+        // 'user'     => 'ifX_XXXXXXX',
+        // 'password' => 'your-database-password',
+
+        // Laragon defaults, usually correct as-is:
+        // 'host'     => 'localhost',
+        // 'name'     => 'jayann_store',
+        // 'user'     => 'root',
+        // 'password' => '',
+    ],
+];
