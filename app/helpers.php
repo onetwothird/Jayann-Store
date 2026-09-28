@@ -279,16 +279,45 @@ function discount_percent(array $product): int
     return (int) round((($price - effective_price($product)) / $price) * 100);
 }
 
+/**
+ * URL for a product photo.
+ *
+ * Only a bare filename is accepted — no directory separators, no traversal and
+ * no scheme — so the value is safe to drop straight into an `src` attribute.
+ *
+ * The file is deliberately NOT verified with is_file() here. That check made a
+ * perfectly reachable image fall back to the placeholder whenever it failed
+ * for an unrelated reason (directory permissions, open_basedir, a case
+ * mismatch on disk, the database and the folder disagreeing on a name), which
+ * is indistinguishable from "the file is missing" on the page. A file that
+ * really is absent now 404s and the browser swaps in the placeholder, so the
+ * two cases are told apart in the network tab.
+ */
 function product_image(?string $image, ?string $prefix = null): string
 {
     $prefix ??= BASE_URL;
     $image = trim((string) $image);
-    if ($image === '' || str_contains($image, "\0")) {
-        return $prefix . 'assets/img/placeholder.svg';
+
+    // \A and \z, not ^ and $: PCRE lets $ match before a trailing newline, so
+    // "photo.png\n" would otherwise slip through the whitelist. The extension
+    // is pinned to real image types so a .php name in the database can never
+    // become a request for an uploaded script.
+    if ($image !== '' && preg_match('#\A[A-Za-z0-9._\[\]\- ]+\.(?:png|jpe?g|gif|webp|avif|svg)\z#i', $image)) {
+        $url = $prefix . 'uploads/products/' . rawurlencode($image);
+
+        // The root .htaccess serves images with a 7-day Cache-Control, so
+        // replacing a file under the same name keeps showing the old one until
+        // the cache expires. Appending the file's mtime busts it. This is only
+        // a cache hint: if stat() is unavailable the plain URL is still correct,
+        // which is why correctness never depends on it.
+        $mtime = @filemtime(UPLOAD_PATH . '/' . $image);
+        if ($mtime !== false) {
+            $url .= '?v=' . $mtime;
+        }
+
+        return $url;
     }
-    if (preg_match('#^[A-Za-z0-9._\[\]\- ]+$#', $image) && is_file(UPLOAD_PATH . '/' . $image)) {
-        return $prefix . 'uploads/products/' . rawurlencode($image);
-    }
+
     return $prefix . 'assets/img/placeholder.svg';
 }
 
