@@ -38,6 +38,15 @@
 .contact__card .info-row__icon { margin: 0 auto var(--sp-3); }
 .contact__media { display: none; }
 .panel { padding: var(--sp-4); }
+/* Panels that are made entirely of sections carrying their own padding, or that
+   are meant to run edge to edge. Padding them here doubles every inner spacing
+   and insets their borders. .panel.receipt is the first case: it doubled the
+   padding of .receipt__head, .receipt__grid, .timeline and .receipt__foot,
+   pulled the dashed rule above the action buttons in off the panel edges, and
+   left a 16px strip between those buttons and the .notice after the panel.
+   .panel--product is the second: its image is meant to bleed to the edge. */
+.panel.receipt,
+.panel--product { padding: 0; }
 .addrgrid { grid-template-columns: 1fr; }
 }
 
