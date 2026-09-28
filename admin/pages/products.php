@@ -49,7 +49,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' && isset($_POST['add_produc
 
     $image = null;
     if (!$errors) {
-        [$image, $uploadError] = admin_handle_upload('image');
+        [$image, $uploadError] = admin_resolve_image_input();
         if ($uploadError !== null) {
             $errors[] = $uploadError;
         }
@@ -260,12 +260,40 @@ require __DIR__ . '/../../app/views/admin/head.php';
             </div>
 
             <div class="field field--full">
-                <label class="field__label" for="np-image">Photo <span class="field__opt">(optional, max 2 MB)</span></label>
+                <label class="field__label" for="np-image-name">Photo <span class="field__opt">(optional)</span></label>
                 <div class="imagefield">
                     <span class="imagefield__preview" id="np-preview">
                         <i class="fa-regular fa-image" style="color:var(--text-soft);font-size:1.5rem" aria-hidden="true"></i>
                     </span>
-                    <input class="input" type="file" id="np-image" name="image" accept="image/*" data-image-input="np-preview">
+                    <div>
+                        <input
+                            class="input"
+                            type="text"
+                            id="np-image-name"
+                            name="image_name"
+                            list="np-uploads-index"
+                            placeholder="summit.webp"
+                            autocomplete="off"
+                            spellcheck="false"
+                            aria-describedby="np-image-hint"
+                        >
+                        <datalist id="np-uploads-index">
+                            <?php foreach (admin_uploads_index() as $available): ?>
+                                <option value="<?= e($available) ?>"></option>
+                            <?php endforeach; ?>
+                        </datalist>
+                        <p class="field__hint" id="np-image-hint" style="margin:0">
+                            Copy the image into <code>uploads/products/</code> in the file manager, then
+                            type or pick its exact name.
+                        </p>
+                        <label class="field__label" for="np-image" style="margin-top:var(--sp-3)">
+                            …or upload from this computer
+                        </label>
+                        <input class="input" type="file" id="np-image" name="image" accept="image/*" data-image-input="np-preview">
+                        <p class="field__hint" style="margin:0">
+                            Up to <?= e(admin_upload_limit_label()) ?>. A file chosen here wins over the name above.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
