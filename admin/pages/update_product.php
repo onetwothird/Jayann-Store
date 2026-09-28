@@ -54,7 +54,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' && isset($_POST['update']))
 
     $newImage = null;
     if (!$errors) {
-        [$newImage, $uploadError] = admin_handle_upload('image');
+        [$newImage, $uploadError] = admin_resolve_image_input();
         if ($uploadError !== null) {
             $errors[] = $uploadError;
         }
@@ -70,7 +70,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' && isset($_POST['update']))
             [$name, $category, $price, $discount, $discount_price, $id]
         );
 
-        if ($newImage !== null) {
+        if ($newImage !== null && $newImage !== (string) $product['image']) {
             $db->run('UPDATE products SET image = ? WHERE id = ?', [$newImage, $id]);
             admin_delete_upload((string) $product['image']);
         }
@@ -203,12 +203,43 @@ require __DIR__ . '/../../app/views/admin/head.php';
                         <div>
                             <p class="field__label" style="margin-bottom:var(--sp-1)">Current image</p>
                             <p class="field__hint" style="margin:0">
-                                Upload a new file to replace it. The old file is removed automatically.
+                                <?php if ((string) $product['image'] === ''): ?>
+                                    No photo yet — this product is showing the placeholder.
+                                <?php else: ?>
+                                    <code><?= e((string) $product['image']) ?></code>
+                                <?php endif; ?>
                             </p>
                         </div>
                     </div>
-                    <input class="input" type="file" name="image" accept="image/*" data-image-input="preview">
-                    <p class="field__hint">JPG, PNG, GIF or WEBP up to 2 MB.</p>
+
+                    <p class="field__label" for="image_name">Image file</p>
+                    <input
+                        class="input"
+                        type="text"
+                        id="image_name"
+                        name="image_name"
+                        list="uploads-index"
+                        value="<?= e((string) $product['image']) ?>"
+                        placeholder="summit.webp"
+                        autocomplete="off"
+                        spellcheck="false"
+                    >
+                    <datalist id="uploads-index">
+                        <?php foreach (admin_uploads_index() as $available): ?>
+                            <option value="<?= e($available) ?>"></option>
+                        <?php endforeach; ?>
+                    </datalist>
+                    <p class="field__hint">
+                        Copy the image into <code>uploads/products/</code> in the file manager, then type or
+                        pick its exact name here. This is the reliable way to set a photo on shared hosting.
+                    </p>
+
+                    <p class="field__label" for="image" style="margin-top:var(--sp-4)">…or upload from this computer</p>
+                    <input class="input" type="file" id="image" name="image" accept="image/*" data-image-input="preview">
+                    <p class="field__hint">
+                        JPG, PNG, GIF, WEBP or AVIF up to <?= e(admin_upload_limit_label()) ?>.
+                        A file chosen here replaces the name above.
+                    </p>
                 </div>
             </section>
 
