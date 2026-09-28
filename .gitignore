@@ -2,7 +2,12 @@
 # Local overrides that must never be committed:
 .env
 .env.local
+# Per-machine config (holds the live database password on the server).
+app/config.local.php
 *.log
+
+# Receipt renderer's scratch output (tools/receipt_check.php writes here)
+tools/.receipt-out/
 
 # OS / editor noise
 .DS_Store
