@@ -168,7 +168,14 @@ require '../app/views/layout/head.php';
 
             <div class="receipt__foot">
                 <a class="btn" href="download_receipt.php?order=<?= (int) $order['id'] ?>">
-                    <i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i> Download PDF
+                    <i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i> Download PDF 
+                </a>
+                <?php /* Paper size and orientation are read from the query
+                       string, so the receipt can be printed on whatever the
+                       customer actually has rather than only A4. */ ?>
+                <a class="btn btn--ghost" href="download_receipt.php?order=<?= (int) $order['id'] ?>&amp;view=inline"
+                   target="_blank" rel="noopener">
+                    <i class="fa-solid fa-print" aria-hidden="true"></i> Print view
                 </a>
                 <a class="btn btn--ghost" href="orders.php">
                     <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> All orders
@@ -178,7 +185,7 @@ require '../app/views/layout/head.php';
                 </a>
             </div>
         </div>
-
+        <br>                    
         <div class="notice notice--info no-print">
             <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
             <div>
