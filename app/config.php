@@ -14,6 +14,19 @@ if (!defined('ASSET_PATH')) {
     define('ASSET_PATH', ROOT_PATH . '/assets');
 }
 
+/**
+ * Site root as the browser sees it, worked out at runtime.
+ *
+ * The same checkout runs from a Laragon subfolder and from the document root
+ * of a shared host, and those need different asset prefixes:
+ *
+ *   Laragon      http://localhost/Jayann_Store/public/home.php  -> /Jayann_Store/
+ *   InfinityFree https://jayann-store.free.nf/public/home.php   -> /
+ *
+ * Hardcoding either one breaks the other, and a wrong BASE_URL takes every
+ * stylesheet, script and product photo down at once — which is exactly what
+ * happened. Derive it instead. Set JAYANN_BASE_URL to override by hand.
+ */
 if (!function_exists('detect_base_url')) {
     function detect_base_url(): string
     {
@@ -41,7 +54,7 @@ function config(string $key, $default = null)
     return ($env === false || $env === '') ? $default : $env;
 }
 
-return [
+$config = [
 
     'db' => [
         'host'     => config('JAYANN_DB_HOST', 'localhost'),
@@ -88,3 +101,26 @@ return [
         'session_ttl' => 14400,
     ],
 ];
+
+/**
+ * Per-machine overrides, merged last so they win over the defaults above.
+ *
+ * The database password differs between your laptop and the live host, and
+ * there is no way to satisfy both with one committed value. Rather than
+ * hardcode the production credentials — which puts them in git history
+ * permanently — keep this checkout on local defaults and drop a
+ * config.local.php next to this file on the server.
+ *
+ * config.local.php is listed in .gitignore and is blocked from being served
+ * over HTTP by the RedirectMatch rule for /app/ in the root .htaccess.
+ * See config.local.php.example for the shape.
+ */
+$localOverrides = __DIR__ . '/config.local.php';
+if (is_file($localOverrides)) {
+    $overrides = require $localOverrides;
+    if (is_array($overrides)) {
+        $config = array_replace_recursive($config, $overrides);
+    }
+}
+
+return $config;
