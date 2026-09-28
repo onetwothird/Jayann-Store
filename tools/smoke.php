@@ -81,6 +81,14 @@ $expect = [
     '/assets/js/admin_script.js'      => [200, 'admin script'],
     '/assets/img/storenijayann.png'   => [200, 'logo'],
     '/assets/img/placeholder.svg'     => [200, 'placeholder art'],
+    '/assets/img/promo2.png'          => [200, 'promo art (proves /assets is reachable)'],
+    // Product photos live outside /assets. They are the one thing that cannot be
+    // verified from a checkout, so check a few directly: a 404 means the files
+    // never reached the server, a 500 means uploads/.htaccess is rejecting them.
+    '/uploads/products/1734357572_summit.webp' => [200, 'product photo (plain name)'],
+    '/uploads/products/coffee.jpeg'   => [200, 'product photo (jpeg)'],
+    '/uploads/products/2004895934-1.png' => [200, 'product photo (png)'],
+    '/uploads/products/'              => [403, 'uploads is not browsable'],
     '/app/config.php'     => [404, 'app code is not web-accessible'],
     '/app/helpers.php'    => [404, 'app code is not web-accessible'],
     '/app/bootstrap.php'  => [404, 'app code is not web-accessible'],
