@@ -6,6 +6,32 @@ $config = require __DIR__ . '/config.php';
 
 $dbConfig = $config['db'];
 
+/*
+ * Shared-host credentials are selected automatically from the hostname, but the
+ * password is a secret and cannot be. If the live block was chosen and still
+ * has no password, say so plainly instead of letting PDO fail with an
+ * "Access denied for user ..." that points at the wrong thing.
+ */
+if (function_exists('deployment_target')
+    && deployment_target() === 'live'
+    && (string) $dbConfig['password'] === ''
+    && getenv('JAYANN_DB_PASSWORD') === false) {
+
+    error_log('Jayann Store: no database password configured for the live host.');
+
+    http_response_code(500);
+    if (PHP_SAPI === 'cli') {
+        exit("Database password is not set.\n"
+            . "Set it in app/config.php (\$dbLive['password']) or export JAYANN_DB_PASSWORD.\n");
+    }
+    exit('<!DOCTYPE html><meta charset="utf-8">'
+        . '<div style="font:16px/1.6 system-ui;max-width:38rem;margin:15vh auto;padding:2rem;'
+        . 'border:1px solid #e5e7eb;border-radius:14px;text-align:center">'
+        . '<h1 style="margin:0 0 .5rem">The store is not set up yet</h1>'
+        . '<p style="color:#6b7684;margin:0">A database password still needs to be added to app/config.php.</p>'
+        . '</div>');
+}
+
 $dsn = sprintf(
     'mysql:host=%s;port=%s;dbname=%s;charset=%s',
     $dbConfig['host'],

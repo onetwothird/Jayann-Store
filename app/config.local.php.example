@@ -3,35 +3,38 @@
 /**
  * Per-machine configuration overrides — TEMPLATE.
  *
- * Copy this to config.local.php and edit. app/config.php loads
- * config.local.php automatically and merges it over the defaults, so you only
- * list the keys that differ on this machine.
+ * This file is OPTIONAL. app/config.php picks the right database by itself:
+ * localhost and *.local get the Laragon MySQL, every other hostname gets the
+ * InfinityFree one. Neither deployment needs this file.
  *
- *   Laragon       leave it absent, or point it at your local MySQL.
- *   InfinityFree  create it on the server through the file manager with the
- *                 hosting credentials, then never commit it.
+ * Use it only for the cases the hostname cannot express — a preview deploy, a
+ * second local database, or keeping a password out of git history:
  *
- * config.local.php is in .gitignore, so it will not be pushed by accident, and
- * the RedirectMatch rule for /app/ in the root .htaccess returns 404 for it
- * over HTTP, so the password is not readable from a browser.
+ *   1. copy this to config.local.php  (the copy is gitignored, the template is not)
+ *   2. leave only the keys that differ
  *
- * Only include the keys you actually need to change. Anything you leave out
- * keeps the value in app/config.php.
+ * The merge is array_replace_recursive, so a partial list is fine; anything
+ * left out keeps the value from app/config.php.
+ *
+ * Prefer keeping the production password here over committing it, since this
+ * file never reaches git while app/config.php does. Note that the RedirectMatch
+ * rule for /app/ in the root .htaccess returns 404 for it over HTTP, so the
+ * password is not readable from a browser either.
  */
 
 declare(strict_types=1);
 
 return [
     'db' => [
-        // InfinityFree:
-        // 'host'     => 'sqlXXX.infinityfree.com',
-        // 'name'     => 'ifX_XXXXXXX_jayann_store',
-        // 'user'     => 'ifX_XXXXXXX',
+        // InfinityFree, if you would rather not put the password in config.php:
+        // 'host'     => 'sql308.infinityfree.com',
+        // 'name'     => 'if0_43025784_jayann_store',
+        // 'user'     => 'if0_43025784',
         // 'password' => 'your-database-password',
 
-        // Laragon defaults, usually correct as-is:
+        // A second local database:
         // 'host'     => 'localhost',
-        // 'name'     => 'jayann_store',
+        // 'name'     => 'jayann_store_other',
         // 'user'     => 'root',
         // 'password' => '',
     ],

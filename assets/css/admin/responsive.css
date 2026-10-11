@@ -26,7 +26,11 @@ transition: transform 260ms cubic-bezier(.4, 0, .2, 1), visibility 260ms;
 
 @media (max-width: 1280px) {
 .admin__body { padding: var(--sp-5); }
-.statgrid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+.statgrid { grid-template-columns: repeat(auto-fit, minmax(11.5rem, 1fr)); }
+}
+
+@media (max-width: 1024px) {
+.statgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 @media (max-width: 1024px) {
@@ -254,6 +258,7 @@ scrollbar-width: thin;
 .btn { padding-inline: var(--sp-2); font-size: 11px; }
 .cellproduct { max-width: 6rem; }
 .topbar__actions { gap: 0; }
+.statgrid { grid-template-columns: minmax(0, 1fr); gap: var(--sp-2); }
 }
 
 @media (max-width: 1024px) and (orientation: landscape) and (max-height: 480px) {
