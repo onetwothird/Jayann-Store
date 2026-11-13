@@ -185,8 +185,7 @@ require '../app/views/layout/head.php';
                 </a>
             </div>
         </div>
-        <br>                    
-        <div class="notice notice--info no-print">
+        <div class="notice notice--info no-print receipt__help">
             <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
             <div>
                 <strong>Questions about this order?</strong>
