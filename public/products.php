@@ -29,7 +29,7 @@ require '../app/views/layout/head.php';
                 <h1 class="sechead__title">All products</h1>
                 <p class="sechead__sub">
                     <?= plural($total, 'product') ?> available
-                    <?= $filters['category'] !== '' ? 'in ' . e($filters['category']) : 'across ' . plural(count(product_categories()), 'category') ?>.
+                    <?= $filters['category'] !== '' ? 'in ' . e($filters['category']) : 'across ' . plural(count(product_categories()), 'category', 'categories') ?>.
                 </p>
             </div>
 
