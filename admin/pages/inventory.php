@@ -192,7 +192,7 @@ require __DIR__ . '/../../app/views/admin/head.php';
 <?php endforeach; ?>
 
 <!-- ================================================================== stats -->
-<div class="statgrid">
+<div class="statgrid statgrid--quad">
     <article class="stat">
         <span class="stat__icon" aria-hidden="true"><i class="fa-solid fa-boxes-stacked"></i></span>
         <div>
