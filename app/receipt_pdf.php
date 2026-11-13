@@ -286,19 +286,22 @@ final class ReceiptPdf
     {
         $pdf = $this->pdf;
 
-        $bandH = $this->u(30);
-        $top   = $this->margin;
+        // The band bleeds off the top and both sides of the sheet; everything
+        // inside it sits on the same left/right edges as the content below.
+        $top   = 0.0;
+        $bandH = $this->margin + $this->u(22);
+        $mid   = $bandH - $this->u(11) - ($this->margin * 0.15);
 
         $pdf->SetFillColor(...self::BRAND);
         $pdf->Rect(0, $top, $this->pageW, $bandH, 'F');
 
-        $pad = $this->u(6);
-        $textX = $this->margin + $pad;
-        $logoH = $this->u(15);
-        $textY = $top + $this->u(7.5);
+        $textX = $this->margin;
+        $tile  = $this->u(16);
+        $textY = $mid - $this->u(6);
 
-        // Logo, scaled to the band. FPDF parses non-interlaced PNG without GD,
-        // but a missing or exotic file must not take the whole receipt down.
+        // Logo on a white tile so the red artwork stays visible on the brand
+        // colour. FPDF parses non-interlaced PNG without GD, but a missing or
+        // exotic file must not take the whole receipt down.
         if ($this->logoUsable) {
             try {
                 $ratio = 1.0;
@@ -306,18 +309,23 @@ final class ReceiptPdf
                 if ($size && $size[1] > 0) {
                     $ratio = $size[0] / $size[1];
                 }
-                $logoW = $logoH * $ratio;
+                // The artwork carries its own transparent margin, so it can fill the tile.
+                $inner = $tile;
+                $logoW = $ratio >= 1 ? $inner : $inner * $ratio;
+                $logoH = $ratio >= 1 ? $inner / $ratio : $inner;
+
+                $pdf->SetFillColor(255, 255, 255);
+                $pdf->Rect($this->margin, $mid - $tile / 2, $tile, $tile, 'F');
+
                 $this->logoUsable = $pdf->Image(
                     $this->logoPath,
-                    $textX,
-                    $top + ($bandH - $logoH) / 2,
+                    $this->margin + ($tile - $logoW) / 2,
+                    $mid - $logoH / 2,
                     $logoW,
                     $logoH,
                     'PNG'
                 ) !== false;
-                if ($this->logoUsable) {
-                    $textX += $logoW + $this->u(4);
-                }
+                $textX += $tile + $this->u(4);
             } catch (Throwable) {
                 $this->logoUsable = false;
             }
@@ -333,18 +341,19 @@ final class ReceiptPdf
         $tagline = trim((string) ($this->store['tagline'] ?? ''));
         $contact = trim((string) ($this->store['phone'] ?? ''));
         if ($contact !== '') {
-            $tagline = $tagline === '' ? $contact : $tagline . '   ·   ' . $contact;
+            $tagline = $tagline === '' ? $contact : $tagline . '   |   ' . $contact;
         }
         $pdf->Cell($this->contentW - ($textX - $this->margin), $this->u(5), $this->txt($tagline), 0, 0, 'L');
 
         // Reference, right-aligned inside the band.
         $pdf->SetFont('Helvetica', 'B', $this->fs(8));
-        $pdf->SetXY($this->margin, $top + $this->u(5.5));
+        $pdf->SetXY($this->margin, $mid - $this->u(5.5));
         $pdf->Cell($this->contentW, $this->u(4.5), $this->txt('ORDER RECEIPT'), 0, 0, 'R');
 
         $pdf->SetFont('Helvetica', '', $this->fs(8));
-        $pdf->SetXY($this->margin, $top + $this->u(10.5));
-        $pdf->Cell($this->contentW, $this->u(4.5), $this->txt('Ref ' . $reference), 0, 0, 'R');
+        $pdf->SetFont('Helvetica', 'B', $this->fs(10));
+        $pdf->SetXY($this->margin, $mid);
+        $pdf->Cell($this->contentW, $this->u(5), $this->txt($reference), 0, 0, 'R');
 
         return $top + $bandH + $this->u(6);
     }
@@ -399,7 +408,10 @@ final class ReceiptPdf
 
         $left = [
             'Billed to' => (string) ($order['customer_name'] ?? ''),
-            'Contact'   => trim((string) ($order['customer_phone'] ?? '') . '  ' . (string) ($order['customer_email'] ?? '')),
+            'Contact'   => implode('   |   ', array_filter([
+                trim((string) ($order['customer_phone'] ?? '')),
+                trim((string) ($order['customer_email'] ?? '')),
+            ], 'strlen')),
         ];
         $right = [];
         if (($method = trim((string) ($order['method_label'] ?? ''))) !== '') {
@@ -411,8 +423,17 @@ final class ReceiptPdf
         // No note/remark panel: the orders table has no such column, so the
         // key is always absent and a panel for it would be dead weight.
 
-        $panelH = $this->panel($left, $this->margin, $y, $panelW);
-        $panelHR = $right === [] ? 0.0 : $this->panel($right, $this->margin + $panelW + $gap, $y, $panelW);
+        // Side-by-side panels share one height so their bottoms line up.
+        $minH = 0.0;
+        if ($twoUp && $right !== []) {
+            $minH = max($this->panel($left, 0, 0, $panelW, 0.0, false), $this->panel($right, 0, 0, $panelW, 0.0, false));
+        }
+        $panelH = $this->panel($left, $this->margin, $y, $panelW, $minH);
+        if ($right !== [] && !$twoUp) {
+            $y += $panelH + $this->u(4);
+            $panelH = 0.0;
+        }
+        $panelHR = $right === [] ? 0.0 : $this->panel($right, $twoUp ? $this->margin + $panelW + $gap : $this->margin, $y, $panelW, $minH);
 
         $y += max($panelH, $panelHR) + $this->u(4);
 
@@ -433,7 +454,7 @@ final class ReceiptPdf
     /**
      * A labelled key/value block. Returns the height consumed.
      */
-    private function panel(array $rows, float $x, float $y, float $w): float
+    private function panel(array $rows, float $x, float $y, float $w, float $minH = 0.0, bool $draw = true): float
     {
         if ($rows === []) {
             return 0.0;
@@ -461,6 +482,10 @@ final class ReceiptPdf
             return 0.0;
         }
         $height += $pad - $this->u(1.2);
+        $height = max($height, $minH);
+        if (!$draw) {
+            return $height;
+        }
 
         $pdf->SetFillColor(...self::PANEL);
         $pdf->Rect($x, $y, $w, $height, 'F');
@@ -511,6 +536,12 @@ final class ReceiptPdf
         // overflow and produced one page per line.
         $reserve = $this->u(26);
 
+        // Never start the table with a header that has no room for a row under
+        // it (short landscape pages with a long address): move it to a new page.
+        if ($this->nearBottom($y, $this->tableHeadHeight + $this->u(5.2))) {
+            $pdf->AddPage();
+            $y = $this->margin;
+        }
         $y = $this->tableHead($cols, $headH, $y);
 
         $pdf->SetFont('Helvetica', '', $this->fs(9));
