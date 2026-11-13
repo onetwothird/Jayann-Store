@@ -74,10 +74,21 @@ function css_files(string $bundle): array
 function render_css(string $bundle, string $version = '2.0'): string
 {
     $html = '';
-    foreach (css_files($bundle) as $file) {
-        $html .= '<link rel="stylesheet" href="' . e($file . '?v=' . $version) . '">' . "\n";
+    foreach (css_manifest()[$bundle] ?? [] as $file) {
+        if (!is_string($file) || $file === '') {
+            continue;
+        }
+        $v     = asset_version('assets/css/' . $file, $version);
+        $html .= '<link rel="stylesheet" href="' . e(BASE_URL . 'assets/css/' . $file . '?v=' . $v) . '">' . "\n";
     }
     return $html;
+}
+
+function asset_version(string $relative, string $fallback = '2.0'): string
+{
+    $path  = dirname(__DIR__) . '/' . ltrim($relative, '/');
+    $mtime = is_file($path) ? @filemtime($path) : false;
+    return $mtime ? (string) $mtime : $fallback;
 }
 
 function redirect(string $url): never
