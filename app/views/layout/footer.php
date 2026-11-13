@@ -141,7 +141,7 @@ $store = $config['store'];
 <?php if (!empty($scripts)): foreach ((array) $scripts as $extra): ?>
 <script src="<?= e($extra) ?>" defer></script>
 <?php endforeach; endif; ?>
-<script src="<?= BASE_URL ?>assets/js/script.js?v=2.0" defer></script>
+<script src="<?= BASE_URL ?>assets/js/script.js?v=<?= asset_version('assets/js/script.js') ?>" defer></script>
 </body>
 </html>
 
