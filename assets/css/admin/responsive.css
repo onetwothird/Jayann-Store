@@ -410,3 +410,184 @@ html { font-size: 17px; }
 html { font-size: 18px; }
 .formgrid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
+
+/* ==========================================================================
+   Inventory — final responsive layer (loaded last, overrides earlier rules)
+   ========================================================================== */
+
+/* Stat cards never leave an empty column or an orphan card. */
+@media (min-width: 1800px) {
+.statgrid { grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); }
+}
+.statgrid--quad { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 1280px) { .statgrid--quad { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 768px) {
+.statgrid--quad .stat { flex-direction: row; align-items: center; gap: var(--sp-3); padding: var(--sp-3); }
+.statgrid--quad .stat__icon { width: 2.25rem; height: 2.25rem; }
+.statgrid--quad .stat__value { font-size: var(--fs-lg); }
+}
+@media (max-width: 480px) {
+.statgrid--quad { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-2); }
+.statgrid--quad .stat { flex-direction: column; align-items: flex-start; gap: var(--sp-2); }
+.statgrid--quad .stat__note { display: none; }
+}
+@media (max-width: 340px) { .statgrid--quad { grid-template-columns: minmax(0, 1fr); } }
+
+/* Side panel drops below the table until there is real room for both. */
+@media (max-width: 1759px) { .grid-2--wide-left { grid-template-columns: minmax(0, 1fr); } }
+@media (min-width: 1760px) { .grid-2--wide-left { grid-template-columns: minmax(0, 2.2fr) minmax(20rem, 1fr); } }
+@media (min-width: 769px) and (max-width: 1759px) {
+.grid-2--wide-left > div:last-child { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-5); align-items: start; }
+.grid-2--wide-left > div:last-child > .card:first-child { grid-column: 1 / -1; }
+.grid-2--wide-left > div:last-child > .card { margin: 0; }
+}
+
+/* Desktop table: readable status pills and a tidy one-line receive form. */
+.inventory-table .tag,
+.reorder-table .tag { white-space: nowrap; }
+@media (min-width: 769px) {
+.inventory-table .restock { flex-wrap: nowrap; }
+.inventory-table .restock__qty { width: 4rem; }
+.inventory-table .restock__ref { width: 6.5rem; }
+.inventory-table td[data-label="Receive"] > .btn { margin-top: var(--sp-2); }
+.inventory-table .cellproduct { min-width: 13rem; }
+.reorder-table .restock { flex-wrap: nowrap; }
+}
+
+/* Phones + small tablets: each product becomes a clean card. */
+@media (max-width: 768px) {
+.inventory-table, .reorder-table { margin-inline: 0 !important; padding-inline: 0 !important; overflow: visible; }
+.inventory-table .table, .reorder-table .table { min-width: 0 !important; font-size: var(--fs-sm); }
+
+.inventory-table .table tbody tr {
+display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: var(--sp-2) var(--sp-3);
+padding: var(--sp-4); border-bottom: 1px solid var(--border);
+}
+.inventory-table .table tbody tr.row-expand { display: block; }
+.inventory-table .table tbody tr.row-expand td { display: block; padding: 0; }
+.inventory-table .table tbody tr.row-expand td::before { content: none; }
+
+.inventory-table .table td,
+.reorder-table .table td {
+display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;
+gap: 2px; padding: 0 !important; border: 0; text-align: left !important;
+font-size: var(--fs-sm);
+}
+.inventory-table .table td::before,
+.reorder-table .table td::before {
+font-size: var(--fs-xs); font-weight: 600; letter-spacing: .04em;
+text-transform: uppercase; color: var(--text-soft);
+}
+.inventory-table .table td[data-label="Product"],
+.inventory-table .table td[data-label="Receive"] { grid-column: 1 / -1; }
+.inventory-table .table td[data-label="Product"]::before,
+.reorder-table .table td[data-label="Product"]::before { content: none; }
+.inventory-table .table td[data-label="On hand"] strong { font-size: var(--fs-md) !important; }
+.inventory-table .stockmeter { margin: 4px 0 0; width: 100%; max-width: 8rem; }
+
+.inventory-table .cellproduct,
+.reorder-table .cellproduct { max-width: none !important; min-width: 0; width: 100%; }
+.inventory-table .cellproduct strong,
+.reorder-table .cellproduct strong { font-size: var(--fs-md); }
+
+.inventory-table .table td[data-label="Receive"] {
+flex-direction: row; flex-wrap: wrap; align-items: center; gap: var(--sp-2);
+padding-top: var(--sp-3) !important; margin-top: var(--sp-1);
+border-top: 1px dashed var(--border);
+}
+.inventory-table .table td[data-label="Receive"]::before { flex-basis: 100%; }
+.inventory-table .restock { flex: 1 1 16rem; flex-wrap: nowrap; justify-content: flex-start; gap: var(--sp-2); }
+.inventory-table .restock__qty { flex: 0 0 4.5rem !important; min-width: 0 !important; width: 4.5rem; }
+.inventory-table .restock__ref { flex: 1 1 auto !important; min-width: 0 !important; width: auto; }
+.inventory-table .restock .btn,
+.reorder-table .restock .btn { flex: 0 0 auto !important; min-width: 2.75rem !important; }
+.inventory-table td[data-label="Receive"] > .btn { margin-top: 0 !important; flex: 0 0 auto; }
+
+/* Reorder queue: product on the left, status + receive on the right. */
+.reorder-table .table tbody tr {
+display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+gap: var(--sp-2) var(--sp-3); padding: var(--sp-3) var(--sp-4);
+border-bottom: 1px solid var(--border);
+}
+.reorder-table .table td[data-label="Product"] { flex: 1 1 12rem; min-width: 0; }
+.reorder-table .table td.num { flex: 0 0 auto; align-items: flex-end; }
+.reorder-table .table td.num::before { content: none; }
+.reorder-table .table td.num br { display: none; }
+.reorder-table .restock { width: auto !important; margin-top: var(--sp-1); }
+.reorder-table .restock__qty { flex: 0 0 4rem !important; min-width: 0 !important; width: 4rem; }
+}
+
+@media (max-width: 360px) {
+.inventory-table .table tbody tr { padding: var(--sp-3); }
+.inventory-table td[data-label="Receive"] > .btn { flex: 1 1 100%; justify-content: center; }
+.reorder-table .table td.num { flex-basis: 100%; align-items: flex-start; }
+}
+
+/* Laptops / landscape tablets: compact 2-row receive form so the table fits without sideways scroll. */
+@media (min-width: 769px) {
+.inventory-table .table th, .inventory-table .table td { padding-inline: var(--sp-3); }
+.inventory-table .stockmeter { width: 4rem; }
+.inventory-table .restock {
+display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--sp-2);
+width: 9.5rem; margin-left: auto;
+}
+.inventory-table .restock__qty { grid-column: 1; grid-row: 1; width: 100%; }
+.inventory-table .restock .btn { grid-column: 2; grid-row: 1; }
+.inventory-table .restock__ref { grid-column: 1 / -1; grid-row: 2; width: 100%; }
+.inventory-table td[data-label="Receive"] > .btn { width: 9.5rem; justify-content: center; }
+}
+
+@media (min-width: 520px) and (max-width: 768px) {
+.inventory-table .table tbody tr { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.inventory-table .table td[data-label="Product"] { grid-column: 1 / 4; grid-row: 1; }
+.inventory-table .table td[data-label="Status"] { grid-column: 4; grid-row: 1; align-items: flex-end; justify-content: center; }
+.inventory-table .table td[data-label="Status"]::before { content: none; }
+}
+
+/* Grid children must be allowed to shrink, otherwise wide tables push the page sideways. */
+.grid-2 > *, .grid-3 > *, .formgrid > *, .admin__body > * { min-width: 0; }
+@media (max-width: 1100px) { .grid-2 { grid-template-columns: minmax(0, 1fr); } }
+.card__body > .table, .sheet .table { min-width: 0 !important; }
+.card__body canvas { max-width: 100%; }
+
+/* All stat grids: two compact columns on phones/tablets, odd last card spans the row. */
+@media (max-width: 768px) {
+.statgrid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: var(--sp-2); }
+.statgrid > .stat:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.statgrid .stat { flex-direction: column; align-items: flex-start; gap: var(--sp-2); padding: var(--sp-3); }
+.statgrid .stat__icon { width: 2.125rem; height: 2.125rem; font-size: .95rem; }
+.statgrid .stat__value { font-size: var(--fs-lg); }
+}
+@media (min-width: 769px) and (max-width: 1280px) {
+.statgrid:not(.statgrid--quad) > .stat:last-child:nth-child(odd) { grid-column: 1 / -1; }
+}
+@media (max-width: 340px) { .statgrid { grid-template-columns: minmax(0, 1fr) !important; } }
+@media (min-width: 1025px) and (max-width: 1759px) {
+.statgrid:not(.statgrid--quad):not(.statgrid--compact) { grid-template-columns: repeat(auto-fit, minmax(10.25rem, 1fr)); }
+.statgrid:not(.statgrid--quad) > .stat:last-child:nth-child(odd) { grid-column: auto; }
+}
+@media (min-width: 1760px) {
+.inventory-table .cellproduct { min-width: 10.5rem; }
+.inventory-table .stockmeter { width: 3.5rem; }
+}
+
+/* Narrow side-panel tables (e.g. dashboard "Needs restocking") shrink the product cell instead of scrolling. */
+.grid-2 > :last-child .cellproduct { min-width: 0; }
+
+/* Small tablets / landscape phones: drop the two reference columns so the inventory table fits. */
+@media (min-width: 769px) and (max-width: 1280px) {
+.inventory-table .table th:nth-child(3), .inventory-table .table td:nth-child(3),
+.inventory-table .table th:nth-child(4), .inventory-table .table td:nth-child(4) { display: none; }
+.inventory-table .cellproduct { min-width: 10rem; }
+}
+
+/* Sidebar + content between 1025 and 1240px leaves little room: stack the dashboard columns and tighten table cells. */
+@media (max-width: 1240px) { .grid-2:not(.grid-2--wide-left) { grid-template-columns: minmax(0, 1fr); } }
+@media (min-width: 769px) and (max-width: 1280px) {
+.table th, .table td { padding-inline: var(--sp-3); }
+.cellproduct { min-width: 11rem; }
+}
+@media (min-width: 769px) and (max-width: 900px), (min-width: 1025px) and (max-width: 1100px) {
+.orders-table .table th, .orders-table .table td { padding-inline: var(--sp-2); }
+}
