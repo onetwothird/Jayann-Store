@@ -161,7 +161,7 @@ require '../app/views/layout/head.php';
                 <span class="steps__num">01</span>
                 <div class="steps__icon"><i class="fa-solid fa-store" aria-hidden="true"></i></div>
                 <h3>Browse the store</h3>
-                <p>Search or filter through <?= plural($productCount, 'product') ?> across <?= plural($categoryCount, 'category') ?>.</p>
+                <p>Search or filter through <?= plural($productCount, 'product') ?> across <?= plural($categoryCount, 'category', 'categories') ?>.</p>
             </article>
             <article class="steps__item">
                 <span class="steps__num">02</span>
