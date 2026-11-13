@@ -256,7 +256,6 @@
 .container { padding-inline: var(--sp-3); }
 .header__inner { gap: var(--sp-2); }
 .brand__logo { width: 36px; height: 36px; }
-.brand--footer .brand__logo { width: 44px; height: 44px; }
 .brand { gap: var(--sp-2); min-width: 0; }
 .brand__text { min-width: 0; }
 .brand__text strong { font-size: var(--fs-base); overflow: hidden; text-overflow: ellipsis; }
@@ -419,39 +418,171 @@ body { min-height: 100dvh; }
 .trustlist { padding-top: var(--sp-3); margin-top: var(--sp-3); }
 }
 
-@media (max-width: 1100px) {
-.footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-8) var(--sp-6); }
-.footer__brand { grid-column: 1 / -1; }
-.trust__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-4); }
+
+/* ==========================================================================
+   Final layout layer — tablets & small laptops
+   ========================================================================== */
+
+/* Category tiles: let the tile grow with its content instead of cropping the art. */
+@media (max-width: 1024px) {
+.cats__tile { aspect-ratio: auto; min-height: 0; padding: var(--sp-4) var(--sp-3); }
+.cats__tile img { max-width: 5.5rem; max-height: 5rem; }
 }
+@media (min-width: 561px) and (max-width: 1024px) {
+.cats { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-3); }
+}
+
+/* Product grid: three tidy columns on tablets instead of two oversized ones. */
+@media (min-width: 561px) and (max-width: 768px) {
+.pgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-3); }
+.pcard__media img { padding: var(--sp-2); }
+}
+@media (min-width: 769px) and (max-width: 1024px) {
+.pgrid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-3); }
+}
+
+/* Home shows 8 products per shelf — four columns keeps both rows full on desktop. */
+@media (min-width: 1025px) {
+.page-home .pgrid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-5); }
+}
+
+/* ---- Receipt ------------------------------------------------------------ */
+.receipt__help { max-width: 46rem; margin: var(--sp-5) auto 0; }
+.receipt__help p strong { display: inline; }
+.receipt__ref { flex-wrap: wrap; justify-content: center; row-gap: var(--sp-1); }
+.receipt__ref strong { white-space: nowrap; }
+@media (min-width: 481px) and (max-width: 768px) {
+.receipt__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 480px) {
+.receipt__head { padding: var(--sp-6) var(--sp-4); }
+.receipt__logo { width: 4rem; height: 4rem; }
+.receipt__ref { display: grid; grid-template-columns: minmax(0, 1fr) auto; text-align: left; border-radius: var(--r-md); width: 100%; }
+.receipt__reflabel { grid-column: 1 / -1; }
+.receipt__ref strong { font-size: var(--fs-lg); }
+.receipt__foot { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: var(--sp-4); }
+.receipt__foot .btn { justify-content: center; padding-inline: var(--sp-2); }
+.receipt__foot .btn:first-child { grid-column: 1 / -1; }
+}
+@media (min-width: 340px) and (max-width: 480px) {
+.receipt__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-3) var(--sp-4); }
+.receipt__cell dd { font-size: var(--fs-sm); }
+}
+
+/* Receipt line items on phones: name, then "price × qty" and the line total on one row. */
+@media (max-width: 560px) {
+.receipt .table--stack tbody tr {
+display: grid; grid-template-columns: auto auto minmax(0, 1fr);
+align-items: baseline; column-gap: var(--sp-2); row-gap: var(--sp-1);
+padding: var(--sp-3) var(--sp-4);
+}
+.receipt .table--stack tbody td { display: block; padding: 0; }
+.receipt .table--stack tbody td::before { content: none; }
+.receipt .table--stack td[data-label="Item"] { grid-column: 1 / -1; font-weight: 600; }
+.receipt .table--stack td[data-label="Price"] { color: var(--text-muted); font-size: var(--fs-sm); }
+.receipt .table--stack td[data-label="Qty"] { color: var(--text-muted); font-size: var(--fs-sm); }
+.receipt .table--stack td[data-label="Qty"]::before { content: '\00D7\00A0'; }
+.receipt .table--stack td[data-label="Subtotal"] { text-align: right; font-weight: 700; }
+}
+@media (max-width: 480px) {
+.receipt__foot { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-2); }
+.receipt__foot .btn { font-size: var(--fs-sm); }
+}
+
+/* Hero: keep the copy clear of the slider arrows and line it up with the page content. */
+@media (min-width: 769px) {
+.hero__overlay {
+padding-inline: max(4.75rem, calc((100% - var(--container, 1200px)) / 2 + var(--sp-4)));
+background: linear-gradient(90deg, rgba(17, 24, 39, .72) 0%, rgba(17, 24, 39, .35) 45%, transparent 80%);
+}
+}
+
+/* ==========================================================================
+   Page-header rhythm (crumbs → eyebrow → title → sub → sort/filters)
+   One spacing scale for every inner page: category, products, search,
+   sale, cart, checkout, orders, receipt, profile, about, contact.
+   Loaded last so the older per-breakpoint section padding can't leak in.
+   ========================================================================== */
+.crumbs { padding-block: var(--sp-6) var(--sp-5); line-height: 1.4; }
+.crumbs span { color: var(--text); font-weight: 600; min-width: 0; overflow-wrap: anywhere; }
+.section.section--flush-top { padding-top: 0; }
+
+.sechead .eyebrow { margin-bottom: var(--sp-3); }
+.sechead__title { font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.25rem); line-height: 1.15; letter-spacing: -.02em; }
+.sechead__sub { margin-top: var(--sp-2); }
+.section--flush-top > .container > .sechead { margin-bottom: var(--sp-6); }
+.section--flush-top > .container > .sechead:has(+ .filters) { margin-bottom: var(--sp-5); }
+.sechead--split { align-items: flex-end; row-gap: var(--sp-4); }
+.sechead--split .sortbar { margin-left: auto; }
+.filters { margin-bottom: var(--sp-6); }
 
 @media (max-width: 768px) {
-.footer__bar-inner { flex-direction: column; align-items: center; text-align: center; gap: var(--sp-4); }
-.footer__pay { width: 100%; justify-content: center; flex-direction: column; }
-.footer__pay-list { justify-content: center; }
-.trust__item { flex-direction: column; align-items: center; text-align: center; padding: var(--sp-4); background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.07); border-radius: var(--r-md); }
-.trust__item i { margin-bottom: var(--sp-2); width: 2.5rem; height: 2.5rem; display: grid; place-items: center; background: rgba(238, 77, 45, .18); border-radius: var(--r-sm); }
+  .section { padding-block: var(--sp-8); }
+  .section.section--flush-top { padding-top: 0; }
+  .crumbs { padding-block: var(--sp-4); }
+  .sechead--split { flex-direction: row; align-items: flex-end; flex-wrap: wrap; }
 }
 
-@media (max-width: 576px) {
-.footer__grid { grid-template-columns: 1fr; gap: var(--sp-6); padding-block: var(--sp-8); }
-.footer__brand, .footer__brand p { text-align: center; margin-inline: auto; }
-.brand--footer { display: inline-flex; flex-direction: column; align-items: center; }
-.footer__col { text-align: center; }
-.footer__col ul { justify-items: center; }
-.footer__contact { align-items: center; }
-.footer__contact li { justify-content: center; text-align: center; flex-direction: column; gap: var(--sp-1); }
-.trust__grid { grid-template-columns: 1fr; gap: var(--sp-3); }
-.social { justify-content: center; width: 100%; }
+@media (max-width: 640px) {
+  .container { padding-inline: var(--sp-4); }
+  .crumbs { padding-block: var(--sp-4) var(--sp-3); }
+  .sechead .eyebrow { margin-bottom: var(--sp-2); }
+  .sechead__title { font-size: clamp(1.375rem, 1rem + 2vw, 1.75rem); }
+  .section--flush-top > .container > .sechead,
+  .section--flush-top > .container > .sechead:has(+ .filters) { margin-bottom: var(--sp-4); }
+  .sechead--split { flex-direction: column; align-items: stretch; gap: var(--sp-3); }
+  .sechead--split > * { width: 100%; }
+  .sechead--split .sortbar { margin-left: 0; }
+  .sechead--split .sortbar .select { width: 100%; }
+  .filters { margin-bottom: var(--sp-5); }
 }
 
-@media (max-width: 380px) {
-.footer__col h3 { font-size: var(--fs-base); }
-.footer__col a { font-size: var(--fs-sm); }
-.trust__item { padding: var(--sp-3); }
+@media (max-width: 480px) {
+  .section { padding-block: var(--sp-7); }
+  .section.section--flush-top { padding-top: 0; }
 }
 
-@media (hover: none) and (pointer: coarse) {
-.footer__col a, .footer__contact li > a { display: inline-flex; align-items: center; min-height: 2.75rem; padding-block: 0.25rem; }
-.social a { width: 2.75rem; height: 2.75rem; }
+@media (max-width: 340px) {
+  .container { padding-inline: var(--sp-3); }
+}
+
+/* ==========================================================================
+   Customer receipt — one shared side gutter so the head, details, items,
+   totals, timeline and buttons all line up on the same left/right edges.
+   ========================================================================== */
+.receipt { --rx: var(--sp-6); overflow: hidden; }
+.receipt__head { padding: var(--sp-8) var(--rx) var(--sp-6); }
+.receipt__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-4) var(--sp-6); padding: var(--sp-6) var(--rx); margin: 0; }
+.receipt__cell dd { margin: 0; line-height: 1.5; }
+.receipt .tablewrap { border-top: 1px solid var(--border); margin: 0; }
+.receipt .table th:first-child, .receipt .table td:first-child { padding-left: var(--rx); }
+.receipt .table th:last-child,  .receipt .table td:last-child  { padding-right: var(--rx); }
+.receipt__totals { padding: var(--sp-5) var(--rx); }
+.receipt__totals .dl { width: min(20rem, 100%); }
+.timeline { padding: var(--sp-6) var(--rx); border-top: 1px dashed var(--border-strong); position: relative; }
+.timeline__row { position: relative; align-items: center; }
+.timeline__row:not(:last-child)::after {
+  content: ''; position: absolute; left: calc(1rem - 1px); top: 2.25rem; bottom: calc(-1 * var(--sp-4) + .25rem);
+  width: 2px; background: var(--border); border-radius: 2px;
+}
+.timeline__body small { display: block; margin-top: 1px; }
+.receipt__foot { padding: var(--sp-5) var(--rx) var(--sp-6); }
+
+@media (max-width: 560px) {
+  .receipt { --rx: var(--sp-4); }
+  .receipt .table--stack tbody tr { padding: var(--sp-3) var(--rx); }
+  .receipt .table--stack tbody td,
+  .receipt .table--stack tbody td:first-child,
+  .receipt .table--stack tbody td:last-child { padding: 0; }
+}
+@media (max-width: 480px) {
+  .receipt__head { padding: var(--sp-6) var(--rx) var(--sp-5); }
+  .receipt__grid { gap: var(--sp-3) var(--sp-4); padding-block: var(--sp-5); }
+  .receipt__totals { padding-block: var(--sp-4); }
+  .receipt__totals .dl { width: 100%; }
+  .timeline { padding-block: var(--sp-5); }
+  .receipt__foot { padding: var(--sp-4) var(--rx) var(--sp-5); }
+}
+@media (max-width: 339px) {
+  .receipt__grid { grid-template-columns: minmax(0, 1fr); }
 }
